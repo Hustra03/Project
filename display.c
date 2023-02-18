@@ -26,4 +26,8 @@ void displayGame()
 }
 
 void displayBird(int x, int y)
-{}
+{
+
+//Set 
+
+}
