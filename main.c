@@ -1,12 +1,6 @@
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
-
-int highscore1;
-int highscore1;
-int highscore1;
-char highscore1name[3];
-char highscore2name[3];
-char highscore3name[3];
+#include "flappybird.h"
 
 int main(void) {
 
@@ -25,59 +19,59 @@ int game(int mode)
 {
 	int birdx = 10;
 	int birdy = 10;
+	int birdspeed = 1; 
 	int size = 5 - mode; //initalize game start values 
 	int distance = 8 - mode;
 	int score = 0;
-	int map[128][32];// 5, 5 mellan obstacles, vilket �r 1 i position 31 
+	
+	// 5, 5 mellan obstacles, vilket �r 1 i position 31 
 	while(1==1)
 	{ 
-	
-
-	displayGame(birdx, birdy,size,distance, score);
+	birdy + birdspeed; 
+	displayGame(birdx, birdy,size,distance, score, map);
 	}
 }
 
 void menu(void)
 { 
-	int menuchoose=0;
 	int button1 = 0; //Change to current binary value of input from button 1
-	if (button1 != 0 && menuchoose==0)
+	if (button1 != 0 && menuChoice==0)
 	{
-		if(0)
+		if(0)//Standard menu
 		{
-		switch (menuchoose)
+		switch (menuChoice)
 			{
 			case 1:
-				startgame();
+				startgame(); //Starts game with current options
 				break;
 			case 2:
-				highscore();
-				menuchoose = 2;
+				highscore();//Changes menu to high score screen
+				menuChoice = 2;
 				break;
 			case 3:
 				changeifficulty();
-				menuchoose =1;
+				menuChoice =1; //Changes menu to difficulty menu
 				break;
 			case 4:
 				break;
 			}
 		}
-		if(1)//Change difficulty menu
+		if(1)//Change to difficulty menu
 		{
-			switch (menuchoose)
+			switch (menuChoice)
 			{
 			case 1:
-				startgame();
+				//increase difficulty
 				break;
 			case 2:
-				highscore();
-				menuchoose = 2;
+				//decrease difficulty
 				break;
 			case 3:
-				changeifficulty();
-				menuchoose =1;
+				//go back
+				menuChoice =0;
 				break;
 			case 4:
+			    //???
 				break;
 			}
 		}
