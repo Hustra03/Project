@@ -2,32 +2,30 @@
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "flappybird.h"
 
-void display( int menu)
+void displayMenu()
 {
 
-	if(menu == 0)
-	{/*display main menu */}
-	if (menu == 1)
-	{/*display high score */
+	if(menuChoice == 0)
+	{
+		/*display main menu */
 	}
-	if (menu == 2)
-	{/*display game difficulty */
+	if (menuChoice == 1)
+	{
+		/*display high score */
 	}
-	if (menu == 3)
-	{/*display control info */
+	if (menuChoice == 2)
+	{
+		/*display game difficulty */
+	}
+	if (menuChoice == 3)
+	{
+		/*display control info */
 	}
 }
 
 void displayGame(birdx, birdy)
 {
-	displayBird(birdx,birdy);
-
-
-}
-
-void displayBird(int x, int y)
-{
-
-//Set 
+//This will change the map array, to display current game state
+//[0][0] is equal to top-left of screen.
 
 }

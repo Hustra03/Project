@@ -42,7 +42,7 @@ void menu(void)
 		switch (menuChoice)
 			{
 			case 1:
-				startgame(); //Starts game with current options
+				game(difficulty); //Starts game with current options
 				break;
 			case 2:
 				highscore();//Changes menu to high score screen
@@ -75,5 +75,6 @@ void menu(void)
 				break;
 			}
 		}
+		displayMenu();
 	}
 }
