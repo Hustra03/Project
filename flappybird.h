@@ -19,5 +19,5 @@ int map[128][32];
 void displayMenu();
 void displayGame(int birdx, int birdy, double birdspeed, int size);
 //define functions for display
-void init(void)
+void init(void);
 //define functions for functions
