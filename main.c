@@ -28,7 +28,7 @@ int game(int mode)
 	while(1==1)
 	{ 
 	birdy + birdspeed; 
-	displayGame(birdx, birdy,size,distance, score, map);
+	displayGame(birdx, birdy,birdspeed,size,distance, score, map);
 	}
 }
 

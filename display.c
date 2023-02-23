@@ -23,7 +23,7 @@ void displayMenu()
 	}
 }
 
-void displayGame(birdx, birdy)
+void displayGame(int birdx, int birdy, double birdspeed, int size)
 {
 //This will change the map array, to display current game state
 //[0][0] is equal to top-left of screen.
