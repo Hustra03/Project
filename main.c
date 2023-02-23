@@ -5,6 +5,7 @@
 int main(void) {
 
 	//initaialize values 
+ 	init();
 
 	while (1)
 	{
