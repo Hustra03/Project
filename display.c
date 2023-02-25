@@ -16,6 +16,22 @@
 #define DISPLAY_TURN_OFF_VBAT (PORTFSET = 0x20)
 
 
+/* quicksleep:
+   A simple function to create a small delay.
+   Very inefficient use of computing resources,
+   but very handy in some special cases. */
+void quicksleep(int cyc) {
+	int i;
+	for(i = cyc; i > 0; i--);
+}//Directly copied from lab 3
+
+uint8_t spi_send_recv(uint8_t data) {
+	while(!(SPI2STAT & 0x08));
+	SPI2BUF = data;
+	while(!(SPI2STAT & 1));
+	return SPI2BUF;
+}//Directly copied from lab 3
+
 
 void displayMenu()
 {
@@ -75,6 +91,31 @@ void display_init(void) {
 	spi_send_recv(0xAF);
 }//Directly copied from lab 3
 
+void display_update(void) {
+	int i, j, k;
+	int c;
+	for(i = 0; i < 4; i++) {
+		DISPLAY_CHANGE_TO_COMMAND_MODE;
+		spi_send_recv(0x22);
+		spi_send_recv(i);
+		
+		spi_send_recv(0x0);
+		spi_send_recv(0x10);
+		
+		DISPLAY_CHANGE_TO_DATA_MODE;
+		
+		for(j = 0; j < 16; j++) {
+			c = textbuffer[i][j];
+			if(c & 0x80)
+				continue;
+			
+			for(k = 0; k < 8; k++)
+				spi_send_recv(font[c*8 + k]);
+		}
+	}
+}//Directly copied from lab 3
+
+
 void display_string(int line, char *s) {
 	int i;
 	if(line < 0 || line >= 4)
@@ -89,3 +130,12 @@ void display_string(int line, char *s) {
 		} else
 			textbuffer[line][i] = ' ';
 }//Directly copied from lab 3
+
+/* Helper function, local to this file.
+   Converts a number to hexadecimal ASCII digits. */
+static void num32asc( char * s, int n ) 
+{
+  int i;
+  for( i = 28; i >= 0; i -= 4 )
+    *s++ = "0123456789ABCDEF"[ (n >> i) & 15 ];
+}

@@ -28,7 +28,7 @@ int game(void)
 	int score = 0;
 
 	int ObstacleX[5];
-	int ObstacleX[5];//Do not use whole array, 3 on difficulty 1(easy), 4 on difficulty 2(normal) and 5 on difficulty 3(hard).
+	int ObstacleY[5];//Do not use whole array, 3 on difficulty 1(easy), 4 on difficulty 2(normal) and 5 on difficulty 3(hard).
 	//initalize game start values 
 
 	
@@ -41,7 +41,7 @@ int game(void)
 	IECSET(0) = 0x00000100; //Interrupt Enable Control */
 	T2CONSET = 0x8070;
 	//Initalized timer for the game
-	while(gametrue==1)
+	while(gametrue==0)
 	{ 
 	}
 }
