@@ -16,6 +16,12 @@ int timecount=0;
 
 void displayMenu();
 void displayGame(int birdx, int birdy, double birdspeed, int size);
+/* Declare bitmap array containing font */
+extern const uint8_t const font[128*8];
+/* Declare bitmap array containing icon */
+extern const uint8_t const icon[128];
+/* Declare text buffer for display output */
+extern char textbuffer[4][16];
 //Above defines global functions from display.c 
 
 void init(void);

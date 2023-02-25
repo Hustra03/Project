@@ -3,17 +3,18 @@
 #include "flappybird.h"
 
 int main(void) {
-
+char textstring[] = "text, more text, and even more text!";
 
 
 	//initaialize values 
  	init();
-
+	display_string(3, textstring);
+	display_update();
 	while (1)
-	{
+	{			
 		//Display menu here
-		menu();
-		savetomem();
+		//menu();
+		//savetomem();
 	}
 }
 
