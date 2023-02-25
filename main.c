@@ -18,20 +18,30 @@ int main(void) {
 }
 
 
-int game(int mode)
+int game(void)
 {
 	int birdx = 10;
 	int birdy = 10;
-	int birdspeed = 1; 
-	int size = 5 - mode; //initalize game start values 
-	int distance = 8 - mode;
+	int size = 5 - difficulty; 
+	int distance = 8 - difficulty;
 	int score = 0;
+
+	int ObstacleX[5];
+	int ObstacleX[5];//Do not use whole array, 3 on difficulty 1(easy), 4 on difficulty 2(normal) and 5 on difficulty 3(hard).
+	//initalize game start values 
+
 	
-	// 5, 5 mellan obstacles, vilket �r 1 i position 31 
-	while(1==1)
+	int gametrue=1;
+	
+	T2CON = 0x0;
+	TMR2 = 0x0;
+	PR2 = 0x4C4B4;
+	IFSCLR(0) = 0x00000100; // Clear the timer interrupt status flag
+	IECSET(0) = 0x00000100; //Interrupt Enable Control */
+	T2CONSET = 0x8070;
+	//Initalized timer for the game
+	while(gametrue==1)
 	{ 
-	birdy + birdspeed; 
-	displayGame(birdx, birdy,birdspeed,size,distance, score, map);
 	}
 }
 
@@ -45,7 +55,7 @@ void menu(void)
 		switch (menuChoice)
 			{
 			case 1:
-				game(difficulty); //Starts game with current options
+				game(); //Starts game with current options
 				break;
 			case 2:
 				highscore();//Changes menu to high score screen
