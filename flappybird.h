@@ -9,14 +9,17 @@ int difficulty=1;
 //This variabel represent current game difficulty, changable in the menu
 
 int timecount=0;
+char textstring[] = "text, more text, and even more text!";
+
 
 #define TRISE  *(volatile unsigned*)(0xbf886100)
 #define PORTE  *(volatile unsigned*)(0xbf886110)
 //Above redefines ports
 
-void displayMenu();
+void displayMenu(void);
 void displayGame(int birdx, int birdy, double birdspeed, int size);
-char textbuffer[4][16];/* Declare text buffer for display output */
+char textbuffer[4][16];
+/* Declare text buffer for display output */
 void delay(int);
 void time2string( char *, int );
 void quicksleep(int cyc);
