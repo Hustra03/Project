@@ -88,6 +88,7 @@ int game(void)
 	while(gametrue==0)
 	{ 
 	}
+	return score;
 }
 
 void menu(void)
@@ -138,4 +139,5 @@ void menu(void)
 		}
 		displayMenu();
 	}
+	return;
 }
