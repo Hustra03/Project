@@ -55,7 +55,9 @@ int main(void) {
 		//Display menu here
 		//menu();
 		//savetomem();
+		break;
 	}
+	return 0;
 }
 
 
@@ -115,17 +117,20 @@ void menu(void)
 			switch (menuChoice)
 			{
 			case 1:
-				//increase difficulty
+				 difficulty=3;
+				//Hard
 				break;
 			case 2:
-				//decrease difficulty
+			 difficulty=2;
+				//Normal
 				break;
 			case 3:
-				//go back
-				menuChoice =0;
+				 difficulty=1;
+				//Easy
 				break;
 			case 4:
-			    //???
+			    //go back
+				menuChoice = 0;
 				break;
 			}
 		}

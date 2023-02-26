@@ -3,7 +3,7 @@ This project aims to create a version of the game "Flappy Bird", which functions
 This is done in collaberation between Erik Paulinder and Mohammed Louai Alayoubi, and built upon previous exercises in the course. 
 
 Install Instruction:
-1.
+1. Unzip files, and ensure the entire project is located in one folder. 
 2.
 3.
 4.
