@@ -99,24 +99,27 @@ void menu(void)
 	{
 		if(currentmenu)//Standard menu
 		{
-		switch (menuChoice)
+		switch (menuChoice == 0)
 			{
 			case 1:
 				game(); //Starts game with current options
+				currentmenu = 3;
 				break;
 			case 2:
 				highscore();//Changes menu to high score screen
 				menuChoice = 2;
+				currentmenu = 2; 
 				break;
 			case 3:
 				changeifficulty();
-				menuChoice =1; //Changes menu to difficulty menu
+				menuChoice = 1; //Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
+				currentmenu = 2; 
 				break;
 			case 4:
 				break;
 			}
 		}
-		if(currentmenu)//Change to difficulty menu
+		if(currentmenu == 1)//Change to difficulty menu
 		{
 			switch (menuChoice)
 			{
@@ -138,7 +141,7 @@ void menu(void)
 				break;
 			}
 		}
-		if(currentmenu) //Change to highscore menu
+		if(currentmenu == 2) //Change to highscore menu
 		{
 			switch (menuChoice)
 			{
@@ -148,7 +151,7 @@ void menu(void)
 					break;
 			}
 		}
-		if(currentmenu) //Gameover menu
+		if(currentmenu == 3 && gameover = 1 ) //Gameover menu
 		{
 			switch (menuChoice)
 			{
@@ -158,6 +161,7 @@ void menu(void)
 					break;
 				case 2:
 					//move back
+					currentmenu = 0;
 					break;
 			}
 
