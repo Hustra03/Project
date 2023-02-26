@@ -10,6 +10,7 @@ char textstring[] = "text, more text, and even more text!";
 
 int difficulty=1;
 //This variabel represent current game difficulty, changable in the menu
+int currentmenu = 0;
 
 int main(void) {
 
@@ -96,7 +97,7 @@ void menu(void)
 	int button1 = 0; //Change to current binary value of input from button 1
 	if (button1 != 0 && menuChoice==0)
 	{
-		if(0)//Standard menu
+		if(currentmenu)//Standard menu
 		{
 		switch (menuChoice)
 			{
@@ -115,7 +116,7 @@ void menu(void)
 				break;
 			}
 		}
-		if(1)//Change to difficulty menu
+		if(currentmenu)//Change to difficulty menu
 		{
 			switch (menuChoice)
 			{
@@ -136,6 +137,30 @@ void menu(void)
 				menuChoice = 0;
 				break;
 			}
+		}
+		if(currentmenu) //Change to highscore menu
+		{
+			switch (menuChoice)
+			{
+				case 1:
+					//go back
+					menuChoice = 0;
+					break;
+			}
+		}
+		if(currentmenu) //Gameover menu
+		{
+			switch (menuChoice)
+			{
+				case 1:
+					// try again
+					game();
+					break;
+				case 2:
+					//move back
+					break;
+			}
+
 		}
 		displayMenu();
 	}
