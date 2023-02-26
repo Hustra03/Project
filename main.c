@@ -10,7 +10,8 @@ char textstring[] = "text, more text, and even more text!";
 
 int difficulty=1;
 //This variabel represent current game difficulty, changable in the menu
-int currentmenu = 0;
+int gameover=0;
+
 
 int main(void) {
 
@@ -92,28 +93,28 @@ int game(void)
 	return score;
 }
 
-void menu(void)
+void menu(void) // the menu should not be run when the game is ongoing
 { 
 	int button1 = 0; //Change to current binary value of input from button 1
-	if (button1 != 0 && menuChoice==0)
+	if (button1 != 0)
 	{
-		if(currentmenu)//Standard menu
+		if(currentmenu == 0)//Standard menu
 		{
-		switch (menuChoice == 0)
+		switch (menuChoice)
 			{
 			case 1:
 				game(); //Starts game with current options
-				currentmenu = 3;
+				currentmenu = 3; // jump to menu number 3 when menu is called, which is the gameover men
 				break;
 			case 2:
 				highscore();//Changes menu to high score screen
-				menuChoice = 2;
-				currentmenu = 2; 
+				//menuChoice = 2;
+				currentmenu = 2; // jump to highscore menu
 				break;
 			case 3:
 				changeifficulty();
-				menuChoice = 1; //Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
-				currentmenu = 2; 
+				//menuChoice = 1; //Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
+				currentmenu = 1;  //jump to difficulty menu 
 				break;
 			case 4:
 				break;
@@ -137,7 +138,8 @@ void menu(void)
 				break;
 			case 4:
 			    //go back
-				menuChoice = 0;
+				//menuChoice = 0;
+				currentmenu = 0; // move back to mainmenu
 				break;
 			}
 		}
@@ -146,12 +148,16 @@ void menu(void)
 			switch (menuChoice)
 			{
 				case 1:
+					//scroll down in the scorelist if needed 
+					break;
+				case 2:
 					//go back
-					menuChoice = 0;
+					//menuChoice = 0;
+					currentmenu = 0; 
 					break;
 			}
 		}
-		if(currentmenu == 3 && gameover = 1 ) //Gameover menu
+		if(currentmenu == 3 && gameover == 1 ) //Gameover menu
 		{
 			switch (menuChoice)
 			{
@@ -159,8 +165,13 @@ void menu(void)
 					// try again
 					game();
 					break;
-				case 2:
-					//move back
+
+				case 2: // check the highscore 
+					highscore();
+					currentmenu = 2;
+					break;
+				case 3:
+					//move back to main
 					currentmenu = 0;
 					break;
 			}

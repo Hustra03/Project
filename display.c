@@ -35,19 +35,23 @@ uint8_t spi_send_recv(uint8_t data) {
 void displayMenu()
 {
 
-	if(menuChoice == 0)
+	if(currentmenu == 0)
 	{
 		/*display main menu */
 	}
-	if (menuChoice == 1)
+	if (currentmenu == 1)
 	{
 		/*display high score */
 	}
-	if (menuChoice == 2)
+	if (currentmenu == 2)
 	{
 		/*display game difficulty */
 	}
-	if (menuChoice == 3)
+	if (currentmenu == 3)
+	{
+		/*display gameover menu */
+	}
+	if (currentmenu == 4)
 	{
 		/*display control info */
 	}

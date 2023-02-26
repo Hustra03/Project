@@ -1,4 +1,5 @@
-int menuChoice=0;
+int menuChoice  = 0; //this varuabel determines which choice been taken means the button that been pressed
+int currentmenu = 0;
 //This variabel determines which menu should be shown by display menu.
 
 void displayMenu(void);
