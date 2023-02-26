@@ -1,3 +1,6 @@
+#include <stdint.h>   /* Declarations of uint_32 and the like */
+#include <pic32mx.h>  /* Declarations of system-specific addresses etc */
+
 int highscores[9];
 //This array stores variabels for high score, int is a 4 byte variabel
 //The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score
