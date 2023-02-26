@@ -1,6 +1,15 @@
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "flappybird.h"
+int highscores[9];
+//This array stores variabels for high score, int is a 4 byte variabel
+//The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score
+//3. and 4. contains initials for score 1, 5. and 6. contains initials for score 2, 7. and 8. contain initials for score 3
+
+char textstring[] = "text, more text, and even more text!";
+
+int difficulty=1;
+//This variabel represent current game difficulty, changable in the menu
 
 int main(void) {
 
@@ -50,13 +59,6 @@ int main(void) {
 	display_string(2, "Engineering");
 	display_string(3, "Welcome!");
 	display_update();
-	while (1)
-	{			
-		//Display menu here
-		//menu();
-		//savetomem();
-		break;
-	}
 	return 0;
 }
 

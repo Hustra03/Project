@@ -1,6 +1,10 @@
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "flappybird.h"
+
+
+int timecount=0;
+
 /* Interrupt Service Routine */
 void user_isr(void)
 {
@@ -19,12 +23,7 @@ void user_isr(void)
 	}
 	if (((IFS(0) >> 15) & 0x1) == 0x1)
 	{	
-		PORTE -= 1; //increases LED value, remove at the end, utalized to show interrupt being called.	
-		IFSCLR(0) = 0x00008000;
-	}//Old suprise assignment, currently falling edge trigger
-		if (((IFS(0) >> 15) & 0x1) == 0x0)
-	{	
-		PORTE -= 1; //increases LED value, remove at the end, utalized to show interrupt being called.	
+		PORTE += 1; //increases LED value, remove at the end, utalized to show interrupt being called.	
 		IFSCLR(0) = 0x00008000;
 	}//Old suprise assignment, currently falling edge trigger
 	return;
