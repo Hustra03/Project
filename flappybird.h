@@ -1,32 +1,32 @@
-int menuChoice  = 0; //this varuabel determines which choice been taken means the button that been pressed
+int menuChoice = 0; // this varuabel determines which choice been taken means the button that been pressed
 int currentmenu = 0;
-//This variabel determines which menu should be shown by display menu.
+// This variabel determines which menu should be shown by display menu.
 
 int highscores[9];
-//The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score
-//3. and 4. contains initials for score 1, 5. and 6. contains initials for score 2, 7. and 8. contain initials for score 3
+// The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score
+// 3. and 4. contains initials for score 1, 5. and 6. contains initials for score 2, 7. and 8. contain initials for score 3
 
-int difficulty=1;
-//This variabel represent current game difficulty, changable in the menu
+int difficulty = 1;
+// This variabel represent current game difficulty, changable in the menu
 
 void displayMenu(void);
 void displayGame(int birdx, int birdy, int ObstacleX[], int ObstacleY[]);
 char textbuffer[4][16];
 /* Declare text buffer for display output */
 void delay(int);
-void time2string( char *, int );
+void time2string(char *, int);
 void quicksleep(int cyc);
 void display_init(void);
 void display_string(int line, char *s);
 void display_update(void);
 uint8_t spi_send_recv(uint8_t data);
-//Above defines global functions from display.c 
+// Above defines global functions from display.c
 
 void init(void);
 void _nmi_handler();
 void _on_reset();
 void _on_bootstrap();
-//define functions from birdfunctions.c
+// define functions from birdfunctions.c
 
 
 const uint8_t const font[] = {
