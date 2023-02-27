@@ -2,6 +2,13 @@ int menuChoice  = 0; //this varuabel determines which choice been taken means th
 int currentmenu = 0;
 //This variabel determines which menu should be shown by display menu.
 
+int highscores[9];
+//The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score
+//3. and 4. contains initials for score 1, 5. and 6. contains initials for score 2, 7. and 8. contain initials for score 3
+
+int difficulty=1;
+//This variabel represent current game difficulty, changable in the menu
+
 void displayMenu(void);
 void displayGame(int birdx, int birdy, double birdspeed, int size);
 char textbuffer[4][16];

@@ -1,16 +1,12 @@
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
+#include <stdio.h>  /* Declarations of rand and the like */
 #include "flappybird.h"
-int highscores[9];
 //This array stores variabels for high score, int is a 4 byte variabel
-//The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score
-//3. and 4. contains initials for score 1, 5. and 6. contains initials for score 2, 7. and 8. contain initials for score 3
 
 char textstring[] = "text, more text, and even more text!";
 
-int difficulty=1;
 //This variabel represent current game difficulty, changable in the menu
-int gameover=0;
 
 
 int main(void) {
@@ -54,6 +50,7 @@ int main(void) {
 	/* SPI2CON bit ON = 1; */
 	SPI2CONSET = 0x8000;
 
+	//Erik Paulinder
 	//initaialize values 
  	init();
 	display_string(0, "KTH/ICT lab");
@@ -65,7 +62,7 @@ int main(void) {
 }
 
 
-int game(void)
+void game(void)
 {
 	int birdx = 10;
 	int birdy = 10;
@@ -87,10 +84,67 @@ int game(void)
 	IECSET(0) = 0x00000100; //Interrupt Enable Control */
 	T2CONSET = 0x8070;
 	//Initalized timer for the game
+	//Erik Paulinder
 	while(gametrue==0)
-	{ 
+	{
+		delay(1000);//Change to change over time, currently one frame per secound
+		if(1==1)//Change to depend on input from button 1, if pressed or not 
+		{
+			birdy+=1;
+		}
+		else
+		{
+			birdy-=1;
+		}
+		for(int i = 0;i<2 + difficulty;i++)
+		{
+			ObstacleX[i]-=1;
+			if (ObstacleX[i]==0)
+			{
+				ObstacleX[i]=32;
+				ObstacleY[i]=(rand() & 0x1F);
+			}
+			if (ObstacleX[i]==birdx)
+			{
+				if ((birdy>ObstacleY[i] - size)&&(birdy<ObstacleY[i] + size))//If Birdy between Y+size and Y-size
+				{
+					score+=1;//If not collison
+				}
+				else
+				{
+					//Collision, Game Over
+				}
+			}
+			
+		}//Decreases x-value of obstacles by one, how many are used depend on difficulty
+		
+		//One Frame of game here
+		//displayGame(); 
 	}
-	return score;
+	//Erik Paulinder
+	currentmenu=4;
+	while(0==0)//Game Over Menu
+	{
+			switch (menuChoice)
+			{
+				case 1:
+				//Decrease current initial value
+					break;
+
+				case 2: 
+				//Increase current initial value
+					currentmenu = 2;
+					break;
+				case 3:
+					//Go to next initial 
+					currentmenu = 0;
+					break;
+				case 4:
+					break;
+			}
+			displayMenu();//Erik Paulinder
+	}
+	return;//Does not return anything, but potentially changes global array High Score
 }
 
 void menu(void) // the menu should not be run when the game is ongoing
@@ -107,12 +161,10 @@ void menu(void) // the menu should not be run when the game is ongoing
 				currentmenu = 3; // jump to menu number 3 when menu is called, which is the gameover men
 				break;
 			case 2:
-				highscore();//Changes menu to high score screen
-				//menuChoice = 2;
-				currentmenu = 2; // jump to highscore menu
+				
+				currentmenu = 2; // jump to highscore menu / Changes menu to high score screen menuChoice = 2;
 				break;
 			case 3:
-				changeifficulty();
 				//menuChoice = 1; //Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
 				currentmenu = 1;  //jump to difficulty menu 
 				break;
@@ -157,26 +209,6 @@ void menu(void) // the menu should not be run when the game is ongoing
 					currentmenu = 0; 
 					break;
 			}
-		}
-		if(currentmenu == 3 && gameover == 1 ) //Gameover menu
-		{
-			switch (menuChoice)
-			{
-				case 1:
-					// try again
-					game();
-					break;
-
-				case 2: // check the highscore 
-					highscore();
-					currentmenu = 2;
-					break;
-				case 3:
-					//move back to main
-					currentmenu = 0;
-					break;
-			}
-
 		}
 		displayMenu();
 	}
