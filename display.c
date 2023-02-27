@@ -72,7 +72,7 @@ for(int i = 0;i<2 + difficulty;i++)
 		minus += 2^i;
 	}
 	game[ObstacleX[i]]= 255 - minus;
-}
+}//Erik Paulinder 2023-02-27
 
 if(game[birdx]>2^birdy)
 {
@@ -96,7 +96,7 @@ if(game[birdx]>2^birdy)
 		}
 	}//This checks if some pixel above is true,if so increase with 2^birdy, the specific pixel is true, do nothing, or if the value is lower, den increase with 2^birdy
 	
-}
+}//Erik Paulinder 2023-02-27
 else
 {
 	game[birdx]+=2^birdy;

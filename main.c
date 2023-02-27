@@ -121,7 +121,7 @@ void game(void)
 		//One Frame of game here
 		displayGame(birdx,birdy,ObstacleX,ObstacleY); 
 	}
-	//Erik Paulinder
+	//Erik Paulinder 2023-02-27
 	currentmenu=4;
 	while(0==0)//Game Over Menu
 	{
@@ -142,7 +142,7 @@ void game(void)
 				case 4:
 					break;
 			}
-			displayMenu();//Erik Paulinder
+			displayMenu();//Erik Paulinder 2023-02-27
 	}
 	return;//Does not return anything, but potentially changes global array High Score
 }
