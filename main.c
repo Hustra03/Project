@@ -101,7 +101,7 @@ void game(void)
 			ObstacleX[i]-=1;
 			if (ObstacleX[i]==0)
 			{
-				ObstacleX[i]=32;
+				ObstacleX[i]=128;
 				ObstacleY[i]=(rand() & 0x1F);
 			}
 			if (ObstacleX[i]==birdx)
@@ -119,7 +119,7 @@ void game(void)
 		}//Decreases x-value of obstacles by one, how many are used depend on difficulty
 		
 		//One Frame of game here
-		//displayGame(); 
+		displayGame(birdx,birdy,ObstacleX,ObstacleY); 
 	}
 	//Erik Paulinder
 	currentmenu=4;

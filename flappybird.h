@@ -10,7 +10,7 @@ int difficulty=1;
 //This variabel represent current game difficulty, changable in the menu
 
 void displayMenu(void);
-void displayGame(int birdx, int birdy, double birdspeed, int size);
+void displayGame(int birdx, int birdy, int ObstacleX[], int ObstacleY[]);
 char textbuffer[4][16];
 /* Declare text buffer for display output */
 void delay(int);

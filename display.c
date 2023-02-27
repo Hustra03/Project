@@ -56,14 +56,60 @@ void displayMenu()
 		/*display control info */
 	}
 	return;
+	display_update();
+}
+//Erik Paulinder 2023-02-27
+
+void displayGame(int birdx, int birdy, int ObstacleX[], int ObstacleY[])
+{
+int game[128];
+
+for(int i = 0;i<2 + difficulty;i++)
+{
+	int minus =0;
+	for(int i = ObstacleY[i];i< 5+ObstacleY[i]- difficulty;i++)
+	{
+		minus += 2^i;
+	}
+	game[ObstacleX[i]]= 255 - minus;
 }
 
-void displayGame(int birdx, int birdy, double birdspeed, int size)
+if(game[birdx]>2^birdy)
 {
-//This will change the map array, to display current game state
-//[0][0] is equal to top-left of screen.
+
+}
+else
+{
+	game[birdx]+=2^birdy;
+}
+
+display_image(0,game);
+display_update();
 return;
 }
+//Above generates a bitmap depending on current game data, and then passes that one to display image
+//Erik Paulinder 2023-02-27
+
+
+void display_image(int x, const uint8_t *data) {
+	int i, j;
+	
+	for(i = 0; i < 4; i++) {
+		DISPLAY_CHANGE_TO_COMMAND_MODE;
+
+		spi_send_recv(0x22);
+		spi_send_recv(i);
+		
+		spi_send_recv(x & 0xF);
+		spi_send_recv(0x10 | ((x >> 4) & 0xF));
+		
+		DISPLAY_CHANGE_TO_DATA_MODE;
+		
+		for(j = 0; j < 32; j++)
+			spi_send_recv(~data[i*32 + j]);
+	}
+}//Directly copied from lab 3
+
 
 void display_init(void) {
     DISPLAY_CHANGE_TO_COMMAND_MODE;
