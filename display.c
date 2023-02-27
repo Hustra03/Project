@@ -76,7 +76,26 @@ for(int i = 0;i<2 + difficulty;i++)
 
 if(game[birdx]>2^birdy)
 {
-
+	if(game[birdx]=2^birdy)
+	{/*Do Nothing*/}
+	int controller=0;
+	int count=1;
+	while (game[birdx]>2^birdy)
+	{
+		controller=2^(birdy+count);
+		if(game[birdx]=2^birdy)
+		{
+		break;//End Loop
+		}
+		if(game[birdx]>controller)
+		{
+		}
+		if(game[birdx]<controller)
+		{
+		game[birdx]+=2^birdy;
+		}
+	}//This checks if some pixel above is true,if so increase with 2^birdy, the specific pixel is true, do nothing, or if the value is lower, den increase with 2^birdy
+	
 }
 else
 {
