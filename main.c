@@ -112,6 +112,7 @@ void menu(void)
 				menuChoice =1; //Changes menu to difficulty menu
 				break;
 			case 4:
+			//Help Menu
 				break;
 			}
 		}
