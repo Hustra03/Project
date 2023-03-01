@@ -30,61 +30,68 @@ void menu(void) // the menu should not be run when the game is ongoing
 	int button1 = 0; // Change to current binary value of input from button 1
 	if (button1 != 0)
 	{
-		if (currentmenu == 0) // Standard menu
+		if (currentmenu == 0) // Standard/Start menu
 		{
 			switch (menuChoice)
 			{
 			case 1:
-				game();			 // Starts game with current options
+				gameStart();			 // Starts game with current options
 				currentmenu = 3; // jump to menu number 3 when menu is called, which is the gameover men
 				break;
 			case 2:
-
-				currentmenu = 2; // jump to highscore menu / Changes menu to high score screen menuChoice = 2;
-				break;
-			case 3:
-				// menuChoice = 1; //Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
+				//menuChoice = 1; //Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
 				currentmenu = 1; // jump to difficulty menu
 				break;
+			case 3:
+				currentmenu = 2; // jump to highscore menu / Changes menu to high score screen menuChoice = 2;
+				break;
 			case 4:
-				// Help Menu
+				currentmenu = 3;
 				break;
 			}
 		}
-		if (currentmenu == 1) // Change to difficulty menu
+		if (currentmenu == 1) // Difficulty menu
 		{
 			switch (menuChoice)
 			{
 			case 1:
-				difficulty = 3;
-				// Hard
+				difficulty = 3; //Change difficulty to 3/Hard
 				break;
 			case 2:
-				difficulty = 2;
-				// Normal
+				difficulty = 2; //Change difficulty to 2/Normal
 				break;
 			case 3:
-				difficulty = 1;
-				// Easy
+				difficulty = 1; //Change difficulty to 1/Easy
 				break;
 			case 4:
-				// go back
-				// menuChoice = 0;
-				currentmenu = 0; // move back to mainmenu
+				//Go back to Start Menu
+				currentmenu = 0;
 				break;
 			}
 		}
-		if (currentmenu == 2) // Change to highscore menu
+		if (currentmenu == 2) // Highscore menu
+		{
+			switch (menuChoice)
+			{
+			case 4: // There is only Case 4, since any the 3 other options (The High Scores) are not interactable with
+				currentmenu = 0; //Go back to Start Menu
+				break;
+			}
+		}
+		if (currentmenu == 3) // Game Over Menu
 		{
 			switch (menuChoice)
 			{
 			case 1:
-				// scroll down in the scorelist if needed
+				// Increase Inital By One  
 				break;
 			case 2:
-				// go back
-				// menuChoice = 0;
-				currentmenu = 0;
+				// Decrease Inital By One  
+				break;
+			case 3:
+				// Go To Next Inital 
+			case 4:
+				currentmenu = 0;//Go back to Start Menu, Add in a confirm since this prevents entering complete high score initals
 				break;
 			}
 		}
@@ -93,7 +100,7 @@ void menu(void) // the menu should not be run when the game is ongoing
 	return;
 }
 
-void game(void)
+void gameStart(void)
 {
 	birdx = 5;//Bird x value, constant 
 	birdy = 32; //Bird y inital value, changes over time
@@ -135,27 +142,27 @@ void game(void)
 			if (ObstacleX[i] < 0)
 			{
 				ObstacleX[i] = 127;
-			}
-			if (ObstacleX[i] == birdx)
+			}//Checks if X value is 0, if so move to right end of screen, aka 127
+			if (ObstacleX[i] == birdx) //Compares X values of bird and obstacle[i]
 			{
-				
-
+			
 				if ((birdy < ((ObstacleY[i]-1)*8) + size) && (birdy > (ObstacleY[i]-1)*8)) 
-				{//Above controlled collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
+				{//Above controlles collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
 
-					score += 1; // If not collison
+					score += 1; // If bird and obstacle[i] do not collide
 				}
 				else
 				{
-					gametrue =1;// Collision, Game Over
+					gametrue =1;// If bird and obstacle[i] do collide, Game Over
 				}
 			}
 
 		} // Decreases x-value of obstacles by one, how many are used depend on difficulty
 
 		// One Frame of game here
-		displayGame(ObstacleX, ObstacleY);
+		displayGame(ObstacleX, ObstacleY);//Sends new obstacles to DisplayGame
 	}
+	//Game is over when this is shown
 	display_string(0,"Game Over!");
 
 	int rem, n;
@@ -167,8 +174,9 @@ void game(void)
         n = n / 10;
         scoreArray[10 - (i + 1)] = rem +'0';
     }
-    scoreArray[10] = '\0';
+    scoreArray[10] = '\0';//Converts int score to char[] scoreArray with correct characters. 
 
+	display_string(1,scoreArray);
 	display_update();
 	delay(100);
 	while (getbtns()==0)
@@ -176,6 +184,6 @@ void game(void)
 		display_string(0,"Game Over!");
 		display_string(1,scoreArray);
 		display_update();
-	}
+	}//Shows game over screen until player presses some button, in order to ensure visability
 	
 }

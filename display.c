@@ -36,25 +36,33 @@ uint8_t spi_send_recv(uint8_t data)
 void displayMenu()
 {
 
-	if (currentmenu == 0)
+	if (currentmenu == 0) // Main Menu
 	{
-		/*display main menu */
+		display_string(0, "1.Start Game");
+		display_string(1, "2.High Score");
+		display_string(2, "3.Difficulty");
+		display_string(3, "4.Help Menu");
 	}
-	if (currentmenu == 1)
+	else if (currentmenu == 1) // Change Difficulty
 	{
-		/*display high score */
+		display_string(0, "1.Easy Mode");
+		display_string(1, "2.Normal Mode");
+		display_string(2, "3.Hard Mode");
+		display_string(3, "4.Back");
 	}
-	if (currentmenu == 2)
+	else if (currentmenu == 2) // High Score
 	{
-		/*display game difficulty */
+		display_string(0, "1.High Score 1");
+		display_string(1, "2.High Score 2");
+		display_string(2, "3.High Score 3");
+		display_string(3, "4.Back");
 	}
-	if (currentmenu == 3)
+	else if (currentmenu == 3) // Help
 	{
-		/*display gameover menu */
-	}
-	if (currentmenu == 4)
-	{
-		/*display control info */
+		display_string(0, "Menu - BTN 1-4");
+		display_string(1, "Jump - BTN 1");
+		display_string(2, "Exit Game - Sw 1-4 true");
+		display_string(3, "Back");
 	}
 	return;
 	display_update();

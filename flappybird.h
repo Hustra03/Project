@@ -9,7 +9,6 @@ int highscores[6];
 int difficulty = 1;
 // This variabel represent current game difficulty, changable in the menu
 
-
 int birdx = 5;
 int birdy = 50;
 //These represent current bird x and y values 
