@@ -27,11 +27,9 @@ void quicksleep(int cyc)
 
 uint8_t spi_send_recv(uint8_t data)
 {
-	while (!(SPI2STAT & 0x08))
-		;
+	while (!(SPI2STAT & 0x08));
 	SPI2BUF = data;
-	while (!(SPI2STAT & 1))
-		;
+	while (!(SPI2STAT & 1));
 	return SPI2BUF;
 } // Directly copied from lab 3
 
@@ -63,55 +61,121 @@ void displayMenu()
 }
 // Erik Paulinder 2023-02-27
 
-void displayGame(int birdx, int birdy, int ObstacleX[], int ObstacleY[])
+void displayGame(int ObstacleX[], int ObstacleY[])
 {
-	int game[128];
-
-	for (int i = 0; i < 2 + difficulty; i++)
+	int i, j, g; // Declaring for-loop variables
+	int yCount = 4;
+	int holesize = 0xff;
+	if (difficulty==2)
 	{
-		int minus = 0;
-		for (int i = ObstacleY[i]; i < 5 + ObstacleY[i] - difficulty; i++)
-		{
-			minus += 2 ^ i;
-		}
-		game[ObstacleX[i]] = 255 - minus;
-	} // Erik Paulinder 2023-02-27
-
-	if (game[birdx] > 2 ^ birdy)
-	{
-		if (game[birdx] = 2 ^ birdy)
-		{ /*Do Nothing*/
-		}
-		int controller = 0;
-		int count = 1;
-		while (game[birdx] > 2 ^ birdy)
-		{
-			controller = 2 ^ (birdy + count);
-			if (game[birdx] = 2 ^ birdy)
-			{
-				break; // End Loop
-			}
-			if (game[birdx] > controller)
-			{
-			}
-			if (game[birdx] < controller)
-			{
-				game[birdx] += 2 ^ birdy;
-			}
-		} // This checks if some pixel above is true,if so increase with 2^birdy, the specific pixel is true, do nothing, or if the value is lower, den increase with 2^birdy
-
-	} // Erik Paulinder 2023-02-27
-	else
-	{
-		game[birdx] += 2 ^ birdy;
+		holesize = 0xFC;
 	}
+	if (difficulty==3)
+	{
+		holesize = 0xF0;
+	}
+	
+	for (i = 0; i < 4; i++)
+	{
+		yCount = 4;
+		for (j = 0; j < 128; j++)
+		{
 
-	display_image(0, game);
-	display_update();
+			for (g = 0; g < 4; g++)
+			{
+				if ((ObstacleX[g] < (i + 1) * 32) && (ObstacleX[g] > (i * 32)))
+				{
+					if (j % 32 == ObstacleX[g] % 32)
+					{
+						if (yCount==3 && ObstacleY[g]==4)
+						{
+							game[j] = holesize;
+						}
+						else if (yCount==2 && ObstacleY[g]==3)
+						{
+							game[j] = holesize;
+						}
+						else if (yCount==1 && ObstacleY[g]==2)
+						{
+							game[j] = holesize;
+						}
+						else if (yCount==0 && ObstacleY[g]==1)
+						{
+							game[j] = holesize;
+						}
+						else
+						{game[j] = 0x00;}
+					}
+					else
+					{
+						game[j] = 0xFF;
+					}
+				}
+				if ((birdx< (i + 1) * 32) && (birdx > (i * 32)))
+				{
+					if (j % 32 == birdx % 32)
+					{
+						if (yCount==3 && (32>=birdy && birdy>24))
+						{
+							if (birdy%8==0)
+							{
+							game[j]= ~(0x80);
+							}
+							else
+							{
+								game[j]= ~(0x80 >> (birdy%8));
+							}
+						}
+						else if (yCount==2 && (24>=birdy && birdy>16))
+						{
+							if (birdy%8==0)
+							{
+							game[j]= ~(0x80);
+							}
+							else
+							{
+								game[j]= ~(0x80 >> (birdy%8));
+							}
+						}
+						else if (yCount==1 && (16>=birdy && birdy>8)) 
+						{
+							if (birdy%8==0)
+							{
+							game[j]= ~(0x80);
+							}
+							else
+							{
+								game[j]= ~(0x80 >> (birdy%8));
+							}
+						}
+						else if (yCount==0 && (8>=birdy && birdy>0))
+						{
+							if (birdy%8==0)
+							{
+							game[j]= ~(0x80);
+							}
+							else
+							{
+								game[j]= ~(0x80 >> (birdy%8));
+							}
+						}
+					}
+				}
+			}
+			if (j % 32 == 0)
+			{
+				yCount -= 1;
+			}
+		}
+		display_image(32 * i, game);
+	}
+	// Creates a Bit-Map Dependent on current game status, setting obstacle and bird x and y to one.
+	// Erik Paulinder 2023-02-27
+
 	return;
 }
-// Above generates a bitmap depending on current game data, and then passes that one to display image
 // Erik Paulinder 2023-02-27
+// Above generates a bitmap depending on current game data, and then passes that one to display image
 
 void display_image(int x, const uint8_t *data)
 {

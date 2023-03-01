@@ -2,150 +2,28 @@
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include <stdio.h>	 /* Declarations of rand and the like */
 #include "flappybird.h"
-// This array stores variabels for high score, int is a 4 byte variabel
 
 char textstring[] = "text, more text, and even more text!";
 
-// This variabel represent current game difficulty, changable in the menu
+int birdx = 5;
+int birdy = 50;
 
 int main(void)
 {
-
-	SYSKEY = 0xAA996655;
-	/* Unlock OSCCON, step 1 */
-
-	SYSKEY = 0x556699AA; /* Unlock OSCCON, step 2 */
-	while (OSCCON & (1 << 21))
-		;				  /* Wait until PBDIV ready */
-	OSCCONCLR = 0x180000; /* clear PBDIV bit <0,1> */
-	while (OSCCON & (1 << 21))
-		;		  /* Wait until PBDIV ready */
-	SYSKEY = 0x0; /* Lock OSCCON */
-
-	/* Set up output pins */
-	AD1PCFG = 0xFFFF;
-	ODCE = 0x0;
-	TRISECLR = 0xFF;
-	PORTE = 0x0;
-
-	/* Output pins for display signals */
-	PORTF = 0xFFFF;
-	PORTG = (1 << 9);
-	ODCF = 0x0;
-	ODCG = 0x0;
-	TRISFCLR = 0x70;
-	TRISGCLR = 0x200;
-
-	/* Set up input pins */
-	TRISDSET = (1 << 8);
-	TRISFSET = (1 << 1);
-
-	/* Set up SPI as master */
-	SPI2CON = 0;
-	SPI2BRG = 4;
-	/* SPI2STAT bit SPIROV = 0; */
-	SPI2STATCLR = 0x40;
-	/* SPI2CON bit CKP = 1; */
-	SPI2CONSET = 0x40;
-	/* SPI2CON bit MSTEN = 1; */
-	SPI2CONSET = 0x20;
-	/* SPI2CON bit ON = 1; */
-	SPI2CONSET = 0x8000;
-
-	// Erik Paulinder
-	// initaialize values
 	init();
-	display_string(0, "KTH/ICT lab");
-	display_string(1, "in Computer");
-	display_string(2, "Engineering");
-	display_string(3, "Welcome!");
+	display_string(0, "Flappy Bird");
+	display_string(1, "By:");
+	display_string(2, "Erik Paulinder");
+	display_string(3, "Mohammed Louai Alayoubi");
 	display_update();
+	delay(100);
+	while(1)
+	{
+		menu();
+	}
 	return 0;
 }
 
-void game(void)
-{
-	int birdx = 10;
-	int birdy = 10;
-	int size = 5 - difficulty;
-	int distance = 8 - difficulty;
-	int score = 0;
-
-	int ObstacleX[5];
-	int ObstacleY[5]; // Do not use whole array, 3 on difficulty 1(easy), 4 on difficulty 2(normal) and 5 on difficulty 3(hard).
-	// initalize game start values
-
-	int gametrue = 1;
-
-	T2CON = 0x0;
-	TMR2 = 0x0;
-	PR2 = 0x4C4B4;
-	IFSCLR(0) = 0x00000100; // Clear the timer interrupt status flag
-	IECSET(0) = 0x00000100; // Interrupt Enable Control */
-	T2CONSET = 0x8070;
-	// Initalized timer for the game
-	// Erik Paulinder
-	while (gametrue == 0)
-	{
-		delay(1000); // Change to change over time, currently one frame per secound
-		if (1 == 1)	 // Change to depend on input from button 1, if pressed or not
-		{
-			birdy += 1;
-		}
-		else
-		{
-			birdy -= 1;
-		}
-		for (int i = 0; i < 2 + difficulty; i++)
-		{
-			ObstacleX[i] -= 1;
-			if (ObstacleX[i] == 0)
-			{
-				ObstacleX[i] = 128;
-				ObstacleY[i] = (rand() & 0x1F);
-			}
-			if (ObstacleX[i] == birdx)
-			{
-				if ((birdy > ObstacleY[i] - size) && (birdy < ObstacleY[i] + size)) // If Birdy between Y+size and Y-size
-				{
-					score += 1; // If not collison
-				}
-				else
-				{
-					// Collision, Game Over
-				}
-			}
-
-		} // Decreases x-value of obstacles by one, how many are used depend on difficulty
-
-		// One Frame of game here
-		displayGame(birdx, birdy, ObstacleX, ObstacleY);
-	}
-	// Erik Paulinder 2023-02-27
-	currentmenu = 4;
-	while (0 == 0) // Game Over Menu
-	{
-		switch (menuChoice)
-		{
-		case 1:
-			// Decrease current initial value
-			break;
-
-		case 2:
-			// Increase current initial value
-			currentmenu = 2;
-			break;
-		case 3:
-			// Go to next initial
-			currentmenu = 0;
-			break;
-		case 4:
-			break;
-		}
-		displayMenu(); // Erik Paulinder 2023-02-27
-	}
-	return; // Does not return anything, but potentially changes global array High Score
-}
 
 void menu(void) // the menu should not be run when the game is ongoing
 {
@@ -213,4 +91,91 @@ void menu(void) // the menu should not be run when the game is ongoing
 		displayMenu();
 	}
 	return;
+}
+
+void game(void)
+{
+	birdx = 5;//Bird x value, constant 
+	birdy = 32; //Bird y inital value, changes over time
+	int score = 0;
+	int i, j;
+
+	int ObstacleX[8] = {31, 63, 95, 127,150,180,210};
+	int ObstacleY[8] = {2, 1, 4, 3, 1,2,3,4}; 
+	// Array length no longer dependent on difficulty, now constant?
+	
+
+	int gametrue = 0;//Determines if it is a game over
+
+	int size= 10-2*difficulty;//Easy = 1, Normal = 2, Hard = 3 => Size = 8, 6, or 4 
+	// initalize game start values
+
+	while (gametrue == 0) //This contains one instance of the game, frame per frame
+	{
+		delay(100); // Change to change over time, currently ten frames per secound
+
+		if (getbtns()!=0x0 && birdy<=32) //Change getbtns to input value
+		{
+			birdy += 1;
+		}
+		else
+		{birdy -= 1;}//Above checks if the bird should jump or fall
+
+		if (birdy==32) 
+		{
+			birdy=30;
+		}
+		if (birdy==0)
+		{gametrue=1;}
+		//Above checks if bird is out of bounds, if above simply reduce value, if below game over because the bird has fallen
+
+		for (i = 0; i < 4; i++) //Performs following tasks for each obstacle, x and y values connected
+		{
+			ObstacleX[i] -= 1; //Increments ObstacleX
+			if (ObstacleX[i] < 0)
+			{
+				ObstacleX[i] = 127;
+			}
+			if (ObstacleX[i] == birdx)
+			{
+				
+
+				if ((birdy < ((ObstacleY[i]-1)*8) + size) && (birdy > (ObstacleY[i]-1)*8)) 
+				{//Above controlled collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
+
+					score += 1; // If not collison
+				}
+				else
+				{
+					gametrue =1;// Collision, Game Over
+				}
+			}
+
+		} // Decreases x-value of obstacles by one, how many are used depend on difficulty
+
+		// One Frame of game here
+		displayGame(ObstacleX, ObstacleY);
+	}
+	display_string(0,"Game Over!");
+
+	int rem, n;
+	char scoreArray[10];
+	n = score;
+    for (i = 0; i < 10; i++)
+    {
+        rem = n % 10;
+        n = n / 10;
+        scoreArray[10 - (i + 1)] = rem +'0';
+    }
+    scoreArray[10] = '\0';
+
+	display_update();
+	delay(100);
+	while (getbtns()==0)
+	{
+		display_string(0,"Game Over!");
+		display_string(1,scoreArray);
+		display_update();
+	}
+	
 }
