@@ -16,6 +16,10 @@ int birdy = 50;
 int score = 0;
 //This represents score of current/last game
 
+
+char textstring[] = "text, more text, and even more text!";
+//Text string for debug purposes
+
 char textbuffer[4][16];
 /* Declare text buffer for display output */
 void delay(int);
@@ -35,6 +39,9 @@ void _on_reset();
 void _on_bootstrap();
 // define functions from birdfunctions.c
 
+void menu(void);
+void gameStart(void);
+//Define global functions from main.c
 
 uint8_t game[512];
 

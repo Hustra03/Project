@@ -3,11 +3,6 @@
 #include <stdio.h>	 /* Declarations of rand and the like */
 #include "flappybird.h"
 
-char textstring[] = "text, more text, and even more text!";
-
-int birdx = 5;
-int birdy = 50;
-
 int main(void)
 {
 	init();
