@@ -5,7 +5,7 @@
 
 int menuChoice = 0; // this varuabel determines which choice been taken means the button that been pressed
 int currentmenu = 0;
-int highscores[6];
+int highscores[6]={10231510,10231510,10231510,10231510,10231510,10231510};
 // The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score
 // 3. contains initials for score 1, 4. contains initials for score 2, 5. contain initials for score 3
 

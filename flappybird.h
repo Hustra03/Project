@@ -43,6 +43,11 @@ void _on_reset();
 void _on_bootstrap();
 // define functions from birdfunctions.c
 
+
+void Write_score(int score, int name);
+void read_scoreboard();
+//define functions from scoreboard.c
+
 void menu(void);
 void gameStart(void);
 //Define global functions from main.c

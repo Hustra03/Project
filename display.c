@@ -61,6 +61,12 @@ void displayMenu()
 	}
 	else if (currentmenu == 2) // High Score
 	{
+<<<<<<< Updated upstream
+=======
+		//display_string(0, "High Score 1");
+		//display_string(1, "High Score 2");
+		//display_string(2, "High Score 3");
+>>>>>>> Stashed changes
 		read_scoreboard();
 		display_string(3, "4.Back");
 	}
