@@ -118,6 +118,7 @@ void read_scoreboard(){
 	    my_strcat( dest, boardnum);
         str = ":";
         my_strcat( dest, str );
+        
         x= highscores[i+3];
         int j = 4;
         while (j !=0)
@@ -128,15 +129,14 @@ void read_scoreboard(){
             x = x/100;
             j--; 
         }
-
         number = highscores[i];
         j = 4;
         while (j !=0)
         {
-            number = number%100;
+            number = number%10;
 	        numtohexa(number,0);
             my_strcat( dest, NumString);
-            number = number/100;
+            number = number/10;
             j--; 
         }
 
