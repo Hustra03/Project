@@ -6,6 +6,18 @@
 
 #define NUMBER_OF_HIGHSCORE 4
 
+
+/* Helper function, local to this file.
+   Converts a number to hexadecimal ASCII digits. */
+void  num32asc(int n)
+{
+	int i;
+	for (i = 28; i >= 0; i -= 4){
+		TextString[i] = "ABCDEFGHIGKLMNOBKRSTUVWHYZ"[(n >> i) & 15];
+	}
+
+}
+
 // Mohammed 2023-02-28
 void Write_score(int score, int name){
     
@@ -25,6 +37,8 @@ void Write_score(int score, int name){
 }
 
 
+
+
 // Mohammed 2023-02-28
 void read_scoreboard(){
     int i;
@@ -42,12 +56,13 @@ void read_scoreboard(){
         my_strcat( dest, str );
 	    my_strcat( dest, TextString );
 
-        num32asc(str,highscores[i+3]);
+        num32asc(highscores[i+3]);
         my_strcat( dest, TextString );
 	    display_string(0,dest);
 	    display_string(1,TextString);
 	    display_update();
 	    display_string(0,"");
+
     }
 
 }

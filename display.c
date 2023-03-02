@@ -282,11 +282,3 @@ void display_string(int line, char *s)
 			textbuffer[line][i] = ' ';
 } // Directly copied from lab 3
 
-/* Helper function, local to this file.
-   Converts a number to hexadecimal ASCII digits. */
-static void num32asc(char *s, int n)
-{
-	int i;
-	for (i = 28; i >= 0; i -= 4)
-		*s++ = "0123456789ABCDEF"[(n >> i) & 15];
-}
