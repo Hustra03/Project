@@ -55,7 +55,7 @@ void read_scoreboard(){
         my_strcat( dest, str );
 	    my_strcat( dest, TextString );
 
-        num32asc(str,highscores[i+3]);
+        num32asc(highscores[i+3]);
         my_strcat( dest, TextString );
 	    display_string(0,dest);
 	    display_string(1,TextString);
