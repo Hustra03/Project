@@ -5,76 +5,70 @@
 #include "flappybird.h"
 
 #define NUMBER_OF_HIGHSCORE 3
-char* NumString[10];
-char* CharString[10];
+char* NumString;
+char* CharString;
 
 /* Helper function, local to this file.
    Converts a number to hexadecimal ASCII digits.  lab3*/
-void num32asc(int n, int x) // s char, n number and x is flag if this is a number or hexadec 
+void numtohexa(int n, int x) // s char, n number and x is flag if this is a number or hexadec 
 {
     int i;
     if (x ==1){
-        for(i=0;i<NUMBER_OF_HIGHSCORE;i++){
             if (n!=0){
-                n = n%100;
+
                 if(n == 10){
-                    CharString[i]="A";
+                    CharString="A";
                 }
                 else if(n == 11){
-                    CharString[i]="B";
+                    CharString="B";
                 }
                 else if(n == 12){
-                    CharString[i]="C";
+                    CharString="C";
                 }
                 else if(n == 13){
-                    CharString[i]="D";
+                    CharString="D";
                 }
                 else if(n == 14){
-                    CharString[i]="E";
+                    CharString="E";
                 }
                 else if(n == 15){
-                    CharString[i]="F";
+                    CharString="F";
                 }
-                n = n/100;
+
             }
         }
-    }
-    if (x ==1){
-        for(i=0;i<NUMBER_OF_HIGHSCORE;i++){
-            n = n%10;
+    if (x ==0){
             if  (n == 0){
-                NumString[i]= "0";
+                NumString= "0";
             }
             else if(n == 1){
-                NumString[i]= "1";
+                NumString= "1";
             }
             else if(n == 2){
-                NumString[i]= "2";
+                NumString= "2";
             }
             else if(n == 3){
-                NumString[i]= "3";
+                NumString= "3";
             }
             else if(n == 4){
-                NumString[i]= "4";
+                NumString= "4";
             }
             else if(n == 5){
-                NumString[i]= "5";
+                NumString= "5";
             }
             else if(n == 6){
-                NumString[i]= "6";
+                NumString= "6";
             }
             else if(n == 7){
-                NumString[i]= "7";
+                NumString= "7";
             }
             else if(n == 8){
-                NumString[i]= "8";
+                NumString= "8";
             }
             else if(n == 9){
-                NumString[i]= "9";
+                NumString= "9";
             }
 
-            n = n/10;
-        }
     }
 }
 
@@ -99,7 +93,7 @@ void Write_score(int score, int name){
 
 
 // Mohammed 2023-02-28
-void read_scoreboard(){
+void read_scoreboard(){  
     int i;
     int number;
     int x,j;
@@ -124,23 +118,30 @@ void read_scoreboard(){
 	    my_strcat( dest, boardnum);
         str = ":";
         my_strcat( dest, str );
-        x= 10;
-        num32asc(x,1);
-        my_strcat( dest, CharString);
-        //number = highscores[i];
-	    //num32asc(NumString,number);
-        //my_strcat( dest, NumString);
-	    //my_strcat( dest, TextString );
-        //x= highscores[i+3];
-        //text32asc(x);
-        //my_strcat( dest, NumString);
+        x= highscores[i+3];
+        int j = 4;
+        while (j !=0)
+        {
+            x = x%100;
+            numtohexa(x,1);
+            my_strcat( dest, CharString); 
+            x = x/100;
+            j--; 
+        }
 
+        number = highscores[i];
+        j = 4;
+        while (j !=0)
+        {
+            number = number%100;
+	        numtohexa(number,0);
+            my_strcat( dest, NumString);
+            number = number/100;
+            j--; 
+        }
 
 	    display_string(i,dest);
-	    //display_string(i+1,TextString);
 	    display_update();
-	    //display_string(0,"");
-
     }
 
 }
