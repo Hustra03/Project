@@ -3,6 +3,8 @@
 #include <stdio.h>	 /* Declarations of rand and the like */
 #include "flappybird.h"
 
+
+
 int main(void)
 {
 	init();
@@ -41,7 +43,7 @@ void menu(void) // the menu should not be run when the game is ongoing
 				currentmenu = 2; // jump to highscore menu / Changes menu to high score screen menuChoice = 2;
 				break;
 			case 4:
-				currentmenu = 4;
+				currentmenu = 4; // help menu to check the controls keys
 				break;
 			}
 		}
