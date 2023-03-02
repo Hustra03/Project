@@ -89,6 +89,19 @@ void init(void)
 	TRISE &= ~0xff;
 	TRISD |= 0xFE0;
 
+	// Mohammed 
+	// btn1 init
+	TRISF = 0x2;
+
+	//timer 3 intterupt timer for buttons
+	T3CON = 0x0;
+	TMR3  = 0X0;
+	PR3   = 0xfAf00;
+	T3CONSET = 0x8070; 
+	IFSCLR(0) = 0x00001000; // clear the interrupt flag
+	IPCSET(3) = 0x0000001F; //
+	IECSET(0) = 0x00001000; // 
+
 } // Erik Paulinder
 
 /* Non-Maskable Interrupt; something bad likely happened, so hang */
