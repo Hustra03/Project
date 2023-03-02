@@ -24,7 +24,7 @@ char* my_strcat(char *s1, const char *s2)
     //Append null character in the last
     *start = '\0';
     return s1;
-}
+}//Copied from online, since problems appeard with importing this function
 void IntToCharArray(int i)//Warning, length = 10;
 {
 	int rem, n;
@@ -36,13 +36,11 @@ void IntToCharArray(int i)//Warning, length = 10;
         TextString[9 - i] = rem +'0';
     }
 	return;
-}
+}//Puts int i in to TextString as chars backwards, aka 1 = 000000001
 
 
 void init(void)
 {
-
-
 	TRISE &= ~0xff;
 	TRISD |= 0xFE0;
 
@@ -60,7 +58,8 @@ void init(void)
 	IECSET(0) = 0x00001000; // 
 	enable_interrupt();
 	return;
-} // Erik Paulinder
+} //The initialization function of the program
+// Erik Paulinder
 
 /* Non-Maskable Interrupt; something bad likely happened, so hang */
 void _nmi_handler()

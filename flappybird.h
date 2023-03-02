@@ -1,10 +1,8 @@
 #ifndef HEADERFILE_H 
 #define HEADERFILE_H 
 
-
 extern int menuChoice; // this varuabel determines which choice been taken means the button that been pressed
-extern int currentmenu;
-// This variabel determines which menu should be shown by display menu.
+extern int currentmenu; // This variabel determines which menu should be shown by display menu.
 
 extern int highscores[6];
 // The diffrent positions represents:  0. top score, 1. middle score, 2. lowest stored score

@@ -61,9 +61,7 @@ void displayMenu()
 	}
 	else if (currentmenu == 2) // High Score
 	{
-		display_string(0, "High Score 1");
-		display_string(1, "High Score 2");
-		display_string(2, "High Score 3");
+		read_scoreboard();
 		display_string(3, "4.Back");
 	}
 	else if (currentmenu == 3) // Help
@@ -74,7 +72,7 @@ void displayMenu()
 		display_string(3, "4. Back");
 	}
 	return;
-}
+}//Shows variable strings depending on currentmenu chosen in menu
 // Erik Paulinder 2023-02-27	
 
 void displayGame(int ObstacleX[], int ObstacleY[])

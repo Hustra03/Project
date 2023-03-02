@@ -256,17 +256,35 @@ void gameStart(void)
 	display_string(3,"");
 	display_update();
 	delay(100);
-	while (getbtns()==0)
+	while (getbtns() == 0 && ((PORTF >> 1)&& 0x1 == 0x0))
 	{
 		display_string(0,"Game Over!");
 		display_string(1,TextString);
 		display_string(2,"");
 		display_string(3,"");
 		display_update();
-	}//Shows game over screen until player presses some button, in order to ensure visability
+	}//Shows game over screen until player presses some button, in order to score is seen
 
-	if (currentmenu == 4) // Game Over Menu
+	int highscoretrue=0;
+	int highscoreindex=0;
+	for (i = 0; i < 3; i++)
+	{
+		if (score>highscores[i])
 		{
+			highscoretrue=1;
+			highscoreindex=i;
+		}
+		
+	}
+	
+	int initials=0;
+	if(highscoretrue==1)
+	{	
+		while (initials<4)
+		{
+			/* code */
+		
+		
 		switch (menuChoice)
 		{
 		case 1:
@@ -281,5 +299,13 @@ void gameStart(void)
 			currentmenu = 0;//Go back to Start Menu, Add in a confirm since this prevents entering complete high score initals
 			break;
 		}
+
+		display_string(0, "High Score 1");
+		display_string(1, "High Score 2");
+		display_string(2, "High Score 3");
+		display_string(3, "4.Back");
+
 		}
+	}
+	
 }

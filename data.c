@@ -154,5 +154,4 @@ const uint8_t const font[] = {
 	0, 0, 4, 2, 4, 2, 0, 0,
 	0, 120, 68, 66, 68, 120, 0, 0,
 };/* Declare bitmap array containing font */
-
-//Data copied directly from lab 3
+//Above data copied directly from lab 3
