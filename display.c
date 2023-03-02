@@ -284,9 +284,11 @@ void display_string(int line, char *s)
 
 /* Helper function, local to this file.
    Converts a number to hexadecimal ASCII digits. */
-static void num32asc(char *s, int n)
+void  num32asc(int n)
 {
 	int i;
-	for (i = 28; i >= 0; i -= 4)
-		*s++ = "0123456789ABCDEF"[(n >> i) & 15];
+	for (i = 28; i >= 0; i -= 4){
+		textstring[i] = "ABCDEFGHIGKLMNOBKRSTUVWHYZ"[(n >> i) & 15];
+	}
+
 }
