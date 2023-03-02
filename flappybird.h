@@ -16,7 +16,6 @@ int birdy = 50;
 int score = 0;
 //This represents score of current/last game
 
-
 char textstring[] = "text, more text, and even more text!";
 //Text string for debug purposes
 
@@ -34,6 +33,7 @@ void displayMenu(void);
 // Above defines global functions from display.c
 
 void init(void);
+char* IntToCharArray(int i);
 void _nmi_handler();
 void _on_reset();
 void _on_bootstrap();
