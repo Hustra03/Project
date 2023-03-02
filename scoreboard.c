@@ -41,7 +41,7 @@ void read_scoreboard(){
         strcat(StringToBePrinted , scorePointer);
 
         TextString = " "; 
-        scorePointer = highscores[i + 3];
+        scorePointer = IntToCharArray(highscores[i + 3]);
         strcat(StringToBePrinted , TextString);
         strcat(StringToBePrinted , scorePointer);
 
