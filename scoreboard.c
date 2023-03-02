@@ -31,7 +31,7 @@ void read_scoreboard(){
     for (i = 0; i < NUMBER_OF_HIGHSCORE; i++)
     {
 
-	    char* str = "Score";
+	    char* str = "Score ";
 	    IntToCharArray(i);
 	    char dest[20]={0};
 	    my_strcat( dest, str );
