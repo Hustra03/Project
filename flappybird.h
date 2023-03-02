@@ -36,6 +36,7 @@ uint8_t spi_send_recv(uint8_t data);
 void displayGame(int ObstacleX[], int ObstacleY[]);
 void displayMenu(void);
 void display_image(int x, const uint8_t *data); 	
+static void num32asc(char *s, int n);
 // Above defines global functions from display.c
 
 void init(void);
