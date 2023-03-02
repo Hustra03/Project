@@ -278,8 +278,11 @@ void gameStart(void)
 	}
 	
 	int initials=0;
+	int initialNumber=1;
 	if(highscoretrue==1)
 	{	
+		highscores[highscoreindex] = score;
+		highscores[highscoreindex+3]=0;
 		while (initials<4)
 		{
 			/* code */
@@ -288,22 +291,21 @@ void gameStart(void)
 		switch (menuChoice)
 		{
 		case 1:
+			initials+=1;
 			// Increase Inital By One  
 			break;
 		case 2:
+			initials-=1;
 			// Decrease Inital By One  
 			break;
 		case 3:
+			highscores[highscoreindex]+=27*(initials);
 			// Go To Next Inital 
 		case 4:
 			currentmenu = 0;//Go back to Start Menu, Add in a confirm since this prevents entering complete high score initals
 			break;
 		}
 
-		display_string(0, "High Score 1");
-		display_string(1, "High Score 2");
-		display_string(2, "High Score 3");
-		display_string(3, "4.Back");
 
 		}
 	}
