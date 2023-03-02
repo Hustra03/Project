@@ -13,6 +13,9 @@ int birdx = 5;
 int birdy = 50;
 //These represent current bird x and y values 
 
+int score = 0;
+//This represents score of current/last game
+
 char textbuffer[4][16];
 /* Declare text buffer for display output */
 void delay(int);

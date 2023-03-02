@@ -46,7 +46,7 @@ void menu(void) // the menu should not be run when the game is ongoing
 				currentmenu = 2; // jump to highscore menu / Changes menu to high score screen menuChoice = 2;
 				break;
 			case 4:
-				currentmenu = 3;
+				currentmenu = 4;
 				break;
 			}
 		}
@@ -95,6 +95,15 @@ void menu(void) // the menu should not be run when the game is ongoing
 				break;
 			}
 		}
+		if (currentmenu == 4)
+		{
+			switch (menuChoice)
+			{
+			case 4: // There is only Case 4, since any the 3 other options (The High Scores) are not interactable with
+				currentmenu = 0; //Go back to Start Menu
+				break;
+			}
+		}
 		displayMenu();
 	}
 	return;
@@ -104,7 +113,7 @@ void gameStart(void)
 {
 	birdx = 5;//Bird x value, constant 
 	birdy = 32; //Bird y inital value, changes over time
-	int score = 0;
+	score = 0;
 	int i, j;
 
 	int ObstacleX[8] = {31, 63, 95, 127,150,180,210};
@@ -132,7 +141,7 @@ void gameStart(void)
 		{
 			birdy=30;
 		}
-		if (birdy==0)
+		if (birdy<=0)
 		{gametrue=1;}
 		//Above checks if bird is out of bounds, if above simply reduce value, if below game over because the bird has fallen
 
@@ -149,7 +158,7 @@ void gameStart(void)
 				if ((birdy < ((ObstacleY[i]-1)*8) + size) && (birdy > (ObstacleY[i]-1)*8)) 
 				{//Above controlles collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
 
-					score += 1; // If bird and obstacle[i] do not collide
+					score += difficulty; // If bird and obstacle[i] do not collide
 				}
 				else
 				{
@@ -165,16 +174,8 @@ void gameStart(void)
 	//Game is over when this is shown
 	display_string(0,"Game Over!");
 
-	int rem, n;
 	char scoreArray[10];
-	n = score;
-    for (i = 0; i < 10; i++)
-    {
-        rem = n % 10;
-        n = n / 10;
-        scoreArray[10 - (i + 1)] = rem +'0';
-    }
-    scoreArray[10] = '\0';//Converts int score to char[] scoreArray with correct characters. 
+    scoreArray[10] =  IntToCharArray(score);//Converts int score to char[] scoreArray with correct characters. 
 
 	display_string(1,scoreArray);
 	display_update();
@@ -185,5 +186,4 @@ void gameStart(void)
 		display_string(1,scoreArray);
 		display_update();
 	}//Shows game over screen until player presses some button, in order to ensure visability
-	
 }

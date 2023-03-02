@@ -2,10 +2,22 @@
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include "flappybird.h"
 
+char* IntToCharArray(int i)//Warning, length = 10;
+{
+	int rem, n;
+	n = score;
+	char Array[10];
+    for (i = 0; i < 10; i++)
+    {
+        rem = n % 10;
+        n = n / 10;
+        Array[10 - (i + 1)] = rem +'0';
+    }
+	return Array;
+}
+
 void init(void)
 {
-
-	
 
 	SYSKEY = 0xAA996655;
 	/* Unlock OSCCON, step 1 */
