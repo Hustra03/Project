@@ -207,7 +207,7 @@ void gameStart(void)
 		{
 			gametrue = 0;
 		}
-		for (i = 0; i < 8; i++) // Performs following for every obstacle
+		for (i = 0; i < 4; i++) // Performs following for every obstacle
 		{
 			ObstacleX[i] -= 1; // Decreases x-value by one
 			if (ObstacleX[i] < 0)
@@ -251,8 +251,10 @@ void gameStart(void)
 	display_string(3, "");
 	display_update();
 	delay(100);
-	while (getbtns() == 0 && ((PORTF >> 1) && 0x1 == 0x0))
+	while (1)
 	{
+		if((getbtns() != 0x0) || (((PORTF >> 1) && 0x1) != 0x0))
+		{break;}
 		display_string(0, "Game Over!");
 		display_string(1, TextString);
 		display_string(2, "");
@@ -271,70 +273,12 @@ void gameStart(void)
 		}
 	}
 
-	int initials = 0;
-	int initialNumber = 1;
-	char* butt[20];
-	char* currentChar[2];
-	my_strcat(butt,"Current :");
 	if (highscoretrue == 1)
 	{
-		
+
 		highscores[highscoreindex] = score;
-		highscores[highscoreindex + 3] = 0;
-		while (initials < 4)
-		{
-
-		if (initials==0)
-		{
-			currentChar[0]='A';
-		}
-		if (initials==1)
-		{
-			currentChar[0]='B';
-		}
-		if (initials==2)
-		{
-			currentChar[0]='C';
-		}
-		if (initials==3)
-		{
-			currentChar[0]='D';
-		}
-		if (initials==4)
-		{
-			currentChar[0]='E';
-		}
-		if (initials==5)
-		{
-			currentChar[0]='F';
-		}
-
-		char* butttemp[20];
-			switch (menuChoice)
-			{
-			case 1:
-				if (initials<5)
-				{initials += 1;} // Increase Inital By One
-				break;
-			case 2:
-				if (initials>2)
-				{initials -= 1;} // Decrease Inital By One
-				break;
-			case 3:
-				highscores[highscoreindex] += (10 + initials) * 10 ^ (2 - initialNumber);
-				initialNumber+=1;
-				my_strcat(butt,currentChar);
-				break;
-				// Go To Next Inital
-			}
 		
-		my_strcat(butttemp,butt);
-		my_strcat(butttemp,currentChar);
-		display_string(0, "1. Increase initials");
-		display_string(1, "2. Decrease initials");
-		display_string(2, "3. Next Initial");
-		display_string(3, butttemp);
-		}
 	}
+	
 	return;
 }
