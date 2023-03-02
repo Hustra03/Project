@@ -182,11 +182,6 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 			{
 				yCount -= 1;
 			}//Increments yCount, for which 1/4 currently located in
-			if (yCount==0)
-			{
-				game[j] = game[j] && (0x01);
-			}//Is intended to create a ground, if implemented correctly
-			
 		}
 		display_image(32 * i, game);//Send current array, with current 1/4 of map, to display_image, to show on OLED-Screen
 	}
