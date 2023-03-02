@@ -24,6 +24,31 @@ void Write_score(int score, int name){
     }
 }
 
+
+
+char *my_strcat(char *s1, const char *s2)
+{
+    //Pointer should not null pointer
+    if((s1 == NULL) && (s2 == NULL))
+        return NULL;
+    //Create copy of s1
+    char *start = s1;
+    //Find the end of the destination string
+    while(*start != '\0')
+    {
+        start++;
+    }
+    //Now append the source string characters
+    //until not get null character of s2
+    while(*s2 != '\0')
+    {
+        *start++ = *s2++;
+    }
+    //Append null character in the last
+    *start = '\0';
+    return s1;
+}
+
 // Mohammed 2023-02-28
 void read_scoreboard(){
     int i;
@@ -35,15 +60,15 @@ void read_scoreboard(){
         scorePointer= IntToCharArray(highscores[i]);
         StringToBePrinted = "Score ";
         TextString = IntToCharArray(i);
-        strcat(StringToBePrinted , TextString);//strcat appends char[] 1 with char[] 2, also removes null charachter from first array
+        my_strcat(StringToBePrinted , TextString);//strcat appends char[] 1 with char[] 2, also removes null charachter from first array
         TextString = " : ";
-        strcat(StringToBePrinted , TextString);
-        strcat(StringToBePrinted , scorePointer);
+        my_strcat(StringToBePrinted , TextString);
+        my_strcat(StringToBePrinted , scorePointer);
 
         TextString = " "; 
         scorePointer = highscores[i + 3];
-        strcat(StringToBePrinted , TextString);
-        strcat(StringToBePrinted , scorePointer);
+        my_strcat(StringToBePrinted , TextString);
+        my_strcat(StringToBePrinted , scorePointer);
 
         display_string(i,StringToBePrinted);// display the scorelist
     }
