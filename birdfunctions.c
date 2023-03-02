@@ -2,18 +2,40 @@
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include "flappybird.h"
 
-char* IntToCharArray(int i)//Warning, length = 10;
+
+char* my_strcat(char *s1, const char *s2)
+{
+    //Pointer should not null pointer
+    if((s1 == NULL) && (s2 == NULL))
+        return NULL;
+    //Create copy of s1
+    char *start = s1;
+    //Find the end of the destination string
+    while(*start != '\0')
+    {
+        start++;
+    }
+    //Now append the source string characters
+    //until not get null character of s2
+    while(*s2 != '\0')
+    {
+        *start++ = *s2++;
+    }
+    //Append null character in the last
+    *start = '\0';
+    return s1;
+}
+void IntToCharArray(int i)//Warning, length = 10;
 {
 	int rem, n;
-	n = score;
-	char Array[10];
+	n = i;
     for (i = 0; i < 10; i++)
     {
         rem = n % 10;
         n = n / 10;
-        Array[10 - (i + 1)] = rem +'0';
+        TextString[9 - i] = rem +'0';
     }
-	return Array;
+	return;
 }
 
 

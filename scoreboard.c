@@ -52,25 +52,28 @@ char *my_strcat(char *s1, const char *s2)
 // Mohammed 2023-02-28
 void read_scoreboard(){
     int i;
-    char* scorePointer;
-    char* StringToBePrinted;
-    char* TextString;
     for (i = 0; i < NUMBER_OF_HIGHSCORE; i++)
     {
-        scorePointer= IntToCharArray(highscores[i]);
-        StringToBePrinted = "Score ";
-        TextString = IntToCharArray(i);
-        my_strcat(StringToBePrinted , TextString);//strcat appends char[] 1 with char[] 2, also removes null charachter from first array
-        TextString = " : ";
-        my_strcat(StringToBePrinted , TextString);
-        my_strcat(StringToBePrinted , scorePointer);
 
-        TextString = " "; 
-        scorePointer = highscores[i + 3];
-        my_strcat(StringToBePrinted , TextString);
-        my_strcat(StringToBePrinted , scorePointer);
+	    char* str = "Score";
+	    IntToCharArray(i);
+	    char dest[20]={0};
+	    my_strcat( dest, str );
+	    my_strcat( dest, TextString );
 
-        display_string(i,StringToBePrinted);// display the scorelist
+        char* str = " : ";
+	    IntToCharArray(highscores[i]);
+        my_strcat( dest, str );
+	    my_strcat( dest, TextString );
+
+        IntToCharArray(numberasc32(highscores[i+3]));
+        my_strcat( dest, TextString );
+	    display_string(0,dest);
+	    display_string(1,TextString);
+	    display_update();
+	    display_string(0,"");
+
+
     }
 
 }

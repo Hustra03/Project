@@ -19,12 +19,11 @@ int birdy = 50;
 int score = 0;
 //This represents score of current/last game
 
-char textstring[] = "text, more text, and even more text!";
-//Text string for debug purposes
 
 char textbuffer[4][16];
 uint8_t game[512];
 
+char TextString[10];//String for score
 
 const uint8_t const font[] = {
 	0, 0, 0, 0, 0, 0, 0, 0,

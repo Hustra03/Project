@@ -171,16 +171,15 @@ void gameStart(void)
 	//Game is over when this is shown
 	display_string(0,"Game Over!");
 
-	char scoreArray[10];
-    scoreArray[10] =  IntToCharArray(score);//Converts int score to char[] scoreArray with correct characters. 
+	IntToCharArray(score);//Converts int score to char[] scoreArray with correct characters. 
 
-	display_string(1,scoreArray);
+	display_string(1,TextString);
 	display_update();
 	delay(100);
 	while (getbtns()==0)
 	{
 		display_string(0,"Game Over!");
-		display_string(1,scoreArray);
+		display_string(1,TextString);
 		display_update();
 	}//Shows game over screen until player presses some button, in order to ensure visability
 }

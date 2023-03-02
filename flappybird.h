@@ -23,11 +23,12 @@ int birdy;
 extern int score;
 //This represents score of current/last game
 
-extern char textstring[];
-//Text string for debug purposes
 
 extern char textbuffer[4][16];
 /* Declare text buffer for display output */
+
+extern char TextString[10];//String for score
+
 void delay(int);
 void time2string(char *, int);
 void quicksleep(int cyc);
@@ -40,7 +41,7 @@ void displayMenu(void);
 // Above defines global functions from display.c
 
 void init(void);
-char* IntToCharArray(int i);
+void IntToCharArray(int i);
 void _nmi_handler();
 void _on_reset();
 void _on_bootstrap();
