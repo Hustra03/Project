@@ -69,13 +69,13 @@ void displayMenu()
 	else if (currentmenu == 3) // Help
 	{
 		display_string(0, "Menu - BTN 1-4");
-		display_string(1, "Jump - BTN 1");
-		display_string(2, "");
+		display_string(1, "Jump - BTN 1/4");
+		display_string(2, "x- BTN 3, x+ BTN 2");
 		display_string(3, "4. Back");
 	}
 	return;
 }
-// Erik Paulinder 2023-02-27
+// Erik Paulinder 2023-02-27	
 
 void displayGame(int ObstacleX[], int ObstacleY[])
 {

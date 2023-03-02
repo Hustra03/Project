@@ -150,71 +150,107 @@ void menu(void) // the menu should not be run when the game is ongoing
 	return;
 }
 
+int next=0;
+int rand(void) 
+// RAND_MAX assumed to be 32767 
+{ 
+      next = next * 1103515245 + 12345; 
+      return (unsigned int)(next/65536) % 32768; 
+} 
+
+
 void gameStart(void)
 {
-	birdx = 5;//Bird x value, constant 
-	birdy = 32; //Bird y inital value, changes over time
-	score = 0;
-	int i, j;
+	birdx = 5;
+	birdy = 32;
+	int score = 0;
 
-	int ObstacleX[8] = {31, 63, 95, 127,150,180,210};
-	int ObstacleY[8] = {2, 1, 4, 3, 1,2,3,4}; 
+	int ObstacleX[8] = {31, 63, 95, 127, 150, 180, 210};
+	int ObstacleY[8] = {2, 1, 4, 3, 1, 2, 3, 4};
 	// Array length no longer dependent on difficulty, now constant?
-	
-
-	int gametrue = 1;//Determines if it is a game over
-
-	int size= 10-2*difficulty;//Easy = 1, Normal = 2, Hard = 3 => Size = 8, 6, or 4 
 	// initalize game start values
 
-	while (gametrue == 1) //This contains one instance of the game, frame per frame
-	{
-		delay(100); // Change to change over time, currently ten frames per secound
+	int gametrue = 0;
+	int NewY = 5;
+	int NewYArray[32];
+	// This contains every possible Y value, psuedorandom placment possible
 
-		if (getbtns()!=0x0 && birdy<=32) //Change getbtns to input value
+	int i, j;
+	for (i = 0; i < 32; i++)
+	{
+		NewYArray[i] = i;
+	}
+	// Fills NewY with every possible y-value
+
+	int size = 0;
+	if (difficulty == 1)
+	{
+		size = 8;
+	}
+	if (difficulty == 2)
+	{
+		size = 6;
+	}
+	if (difficulty == 3)
+	{
+		size = 4;
+	}
+
+	while (gametrue == 0)
+	{
+		delay(100); // Change to change over time, currently one frame per secound
+		if (((getbtns() >> 2) & 0x1 == 0x1 || ((PORTF >> 1)& 0x1) ==0x1) && birdy <= 32)
 		{
 			birdy += 1;
 		}
 		else
 		{
 			birdy -= 1;
-		}//Above checks if the bird should jump or fall
-
-		if (birdy==32) 
-		{
-			birdy=30;
 		}
-		if (birdy<=0)
+		if ((getbtns() & 0x1) == 0x1 && birdy < 128) //Button 2 moves right, if not greater than screen
 		{
-			gametrue=0;
+			birdx += 1;
 		}
-		//Above checks if bird is out of bounds, if above simply reduce value, if below game over because the bird has fallen
 
-		for (i = 0; i < 4; i++) //Performs following tasks for each obstacle, x and y values connected
+		if (((getbtns() >> 1) & 0x1) == 0x1 && birdy > 3)
 		{
-			ObstacleX[i] -= 1; //Increments ObstacleX
+			birdx -= 1;
+		}
+
+		if (birdy == 32)
+		{
+			birdy = 30;
+		}
+		if (birdy == 0)
+		{
+			gametrue = 1;
+		}
+		for (i = 0; i < 4; i++)
+		{
+			ObstacleX[i] -= 1;
 			if (ObstacleX[i] < 0)
 			{
 				ObstacleX[i] = 127;
-			}//Checks if X value is 0, if so move to right end of screen, aka 127
-			if (ObstacleX[i] == birdx) //Compares X values of bird and obstacle[i]
+				ObstacleY[i]= (rand() % (4)) + 1;
+			}
+			if (ObstacleX[i] == birdx)
 			{
-			
-				if ((birdy < ((ObstacleY[i]-1)*8) + size) && (birdy > (ObstacleY[i]-1)*8)) 
-				{//Above controlles collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
 
-					score += difficulty; // If bird and obstacle[i] do not collide
+				if ((birdy < ((ObstacleY[i] - 1) * 8) + size) && (birdy > (ObstacleY[i] - 1) * 8))
+				{ // Above controlled collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
+
+					score += 1; // If not collison
 				}
 				else
 				{
-					gametrue =0;// If bird and obstacle[i] do collide, Game Over
+					gametrue = 1; // Collision, Game Over
 				}
 			}
 
 		} // Decreases x-value of obstacles by one, how many are used depend on difficulty
 
 		// One Frame of game here
-		displayGame(ObstacleX, ObstacleY);//Sends new obstacles to DisplayGame
+		displayGame(ObstacleX, ObstacleY);
 	}
 	//Game is over when this is shown
 	IntToCharArray(score);//Converts int score to char[] scoreArray with correct characters. 
