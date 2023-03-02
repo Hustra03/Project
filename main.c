@@ -270,13 +270,16 @@ void gameStart(void)
 		{
 			highscoretrue = 1;
 			highscoreindex = i;
+			i=3;
 		}
 	}
+
 
 	if (highscoretrue == 1)
 	{
 
 		highscores[highscoreindex] = score;
+		
 		
 	}
 	
