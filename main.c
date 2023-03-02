@@ -161,7 +161,7 @@ int rand(void)
 
 void gameStart(void)
 {
-	birdx = 5;
+	birdx = 10;
 	birdy = 32;
 	int score = 0;
 
@@ -170,17 +170,7 @@ void gameStart(void)
 	// Array length no longer dependent on difficulty, now constant?
 	// initalize game start values
 
-	int gametrue = 0;
-	int NewY = 5;
-	int NewYArray[32];
-	// This contains every possible Y value, psuedorandom placment possible
-
-	int i, j;
-	for (i = 0; i < 32; i++)
-	{
-		NewYArray[i] = i;
-	}
-	// Fills NewY with every possible y-value
+	int gametrue = 1;
 
 	int size = 0;
 	if (difficulty == 1)
@@ -195,8 +185,9 @@ void gameStart(void)
 	{
 		size = 4;
 	}
+	int i, j;
 
-	while (gametrue == 0)
+	while (gametrue == 1)
 	{
 		delay(100); // Change to change over time, currently one frame per secound
 		if (((getbtns() >> 2) & 0x1 == 0x1 || ((PORTF >> 1)& 0x1) ==0x1) && birdy <= 32)
@@ -207,34 +198,31 @@ void gameStart(void)
 		{
 			birdy -= 1;
 		}
-		if ((getbtns() & 0x1) == 0x1 && birdy < 128) //Button 2 moves right, if not greater than screen
+		if ((score+1 % 100 == 0 )&&(size>4))//Increased difficulty over time
 		{
-			birdx += 1;
+			size-=2;
 		}
-
-		if (((getbtns() >> 1) & 0x1) == 0x1 && birdy > 3)
-		{
-			birdx -= 1;
-		}
-
-		if (birdy == 32)
+		
+		if (birdy == 32)//Checks that player is not above game area
 		{
 			birdy = 30;
 		}
-		if (birdy == 0)
+		if (birdy == 0)//Checks that player is not below game area
 		{
-			gametrue = 1;
+			gametrue = 0;
 		}
-		for (i = 0; i < 4; i++)
+		for (i = 0; i < 8; i++)//Performs following for every obstacle
 		{
-			ObstacleX[i] -= 1;
+			ObstacleX[i] -= 1;//Decreases x-value by one
 			if (ObstacleX[i] < 0)
 			{
 				ObstacleX[i] = 127;
 				ObstacleY[i]= (rand() % (4)) + 1;
-			}
-			if (ObstacleX[i] == birdx)
-			{
+			}//Checks if obstacle x value is less than zero, if so move to the far right/x=127, and generate a new y-value
+
+			if (ObstacleX[i] == birdx || (((getbtns() & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx+1))||((((getbtns() >> 1) & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx-1)))
+			{//Checks if player x value equals Obstacle[i] x, and if currently moving, if located one space before or after, in order to avoid wallclipping
+			//Erik Paulinder
 
 				if ((birdy < ((ObstacleY[i] - 1) * 8) + size) && (birdy > (ObstacleY[i] - 1) * 8))
 				{ // Above controlled collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
@@ -243,19 +231,27 @@ void gameStart(void)
 				}
 				else
 				{
-					gametrue = 1; // Collision, Game Over
+					gametrue = 0; // Collision, Game Over
 				}
 			}
 
-		} // Decreases x-value of obstacles by one, how many are used depend on difficulty
+		}
+		if (((getbtns() & 0x1) == 0x1 && birdx < 120)) //Button 2 moves right, if birdx not greater than 120
+		{
+			birdx += 1;
+		}
 
+		if (((((getbtns() >> 1) & 0x1) == 0x1) && (birdx > 5))) //Button 3 moves left, if birdx not less than 0
+		{
+			birdx -= 1;
+		}
 		// One Frame of game here
 		displayGame(ObstacleX, ObstacleY);
 	}
 	//Game is over when this is shown
 	IntToCharArray(score);//Converts int score to char[] scoreArray with correct characters. 
 	display_string(0,"Game Over!");
-	display_string(1,TextString);
+	display_string(1, TextString);
 	display_string(2,"");
 	display_string(3,"");
 	display_update();
@@ -269,22 +265,21 @@ void gameStart(void)
 		display_update();
 	}//Shows game over screen until player presses some button, in order to ensure visability
 
-
-		if (currentmenu == 4) // Game Over Menu
+	if (currentmenu == 4) // Game Over Menu
 		{
-			switch (menuChoice)
-			{
-			case 1:
-				// Increase Inital By One  
-				break;
-			case 2:
-				// Decrease Inital By One  
-				break;
-			case 3:
-				// Go To Next Inital 
-			case 4:
-				currentmenu = 0;//Go back to Start Menu, Add in a confirm since this prevents entering complete high score initals
-				break;
-			}
+		switch (menuChoice)
+		{
+		case 1:
+			// Increase Inital By One  
+			break;
+		case 2:
+			// Decrease Inital By One  
+			break;
+		case 3:
+			// Go To Next Inital 
+		case 4:
+			currentmenu = 0;//Go back to Start Menu, Add in a confirm since this prevents entering complete high score initals
+			break;
+		}
 		}
 }
