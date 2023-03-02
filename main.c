@@ -336,4 +336,5 @@ void gameStart(void)
 		display_string(3, butttemp);
 		}
 	}
+	return;
 }
