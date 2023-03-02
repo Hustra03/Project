@@ -45,16 +45,25 @@ void displayMenu()
 	}
 	else if (currentmenu == 1) // Change Difficulty
 	{
-		display_string(0, "1.Easy Mode");
-		display_string(1, "2.Normal Mode");
-		display_string(2, "3.Hard Mode");
+		display_string(0, "1.Current: Easy");
+		if (difficulty==2)
+		{
+			display_string(0, "1.Current: Normal");
+		}
+		if (difficulty==3)
+		{
+			display_string(0, "1.Current: Hard");
+		}
+		
+		display_string(1, "2. -- Difficulty");
+		display_string(2, "3. ++ Difficulty");
 		display_string(3, "4.Back");
 	}
 	else if (currentmenu == 2) // High Score
 	{
-		display_string(0, "1.High Score 1");
-		display_string(1, "2.High Score 2");
-		display_string(2, "3.High Score 3");
+		display_string(0, "High Score 1");
+		display_string(1, "High Score 2");
+		display_string(2, "High Score 3");
 		display_string(3, "4.Back");
 	}
 	else if (currentmenu == 3) // Help

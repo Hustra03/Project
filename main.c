@@ -80,13 +80,16 @@ void menu(void) // the menu should not be run when the game is ongoing
 			{
 			case 1:
 				gameStart();// Starts game with current options
+				menuChoice=0;
 				break;
 			case 2:
 				//Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
 				currentmenu = 1; // jump to difficulty menu
+				menuChoice=0;
 				break;
 			case 3:
 				currentmenu = 2; // jump to highscore menu / Changes menu to high score screen menuChoice = 2;
+				menuChoice=0;
 				break;
 			case 4:
 				currentmenu = 3; // help menu to check the controls keys
@@ -99,36 +102,47 @@ void menu(void) // the menu should not be run when the game is ongoing
 			switch (menuChoice)
 			{
 			case 1:
-				difficulty = 3; //Change difficulty to 3/Hard
+				menuChoice=0;
 				break;
 			case 2:
-				difficulty = 2; //Change difficulty to 2/Normal
+				if (difficulty < 3)
+				{
+					difficulty +=1;
+					menuChoice=0;
+				}
 				break;
 			case 3:
-				difficulty = 1; //Change difficulty to 1/Easy
+				if (difficulty > 1)
+				{
+					difficulty -=1;
+					menuChoice=0;
+				}
 				break;
 			case 4:
 				//Go back to Start Menu
 				currentmenu = 0;
+				menuChoice=0;
 				break;
 			}
 		}
-		if ((currentmenu == 2)) // Highscore menu
+		if (currentmenu == 2) // Highscore menu
 		{
 			switch (menuChoice)
 			{
 			case 4:
 				currentmenu = 0;
+				menuChoice=0;
 				break;
 			}
 		}
-		if ((currentmenu == 3))
+		if (currentmenu == 3)
 		{
 			switch (menuChoice)
 			{
 			case 4:
 				//Go back to Start Menu
 				currentmenu = 0;
+				menuChoice=0;
 				break;
 			}
 		}
@@ -162,14 +176,18 @@ void gameStart(void)
 			birdy += 1;
 		}
 		else
-		{birdy -= 1;}//Above checks if the bird should jump or fall
+		{
+			birdy -= 1;
+		}//Above checks if the bird should jump or fall
 
 		if (birdy==32) 
 		{
 			birdy=30;
 		}
 		if (birdy<=0)
-		{gametrue=0;}
+		{
+			gametrue=0;
+		}
 		//Above checks if bird is out of bounds, if above simply reduce value, if below game over because the bird has fallen
 
 		for (i = 0; i < 4; i++) //Performs following tasks for each obstacle, x and y values connected
@@ -205,10 +223,6 @@ void gameStart(void)
 	display_string(2,"");
 	display_string(3,"");
 	display_update();
-
-	
-	
-
 	delay(100);
 	while (getbtns()==0)
 	{
