@@ -19,7 +19,6 @@ int birdy = 50;
 int score = 0;
 //This represents score of current/last game
 
-
 char textbuffer[4][16];
 uint8_t game[512];
 

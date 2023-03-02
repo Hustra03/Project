@@ -14,12 +14,11 @@ extern int difficulty;
 // This variabel represent current game difficulty, changable in the menu
 
 extern int birdx;
-int birdy;
+extern int birdy;
 //These represent current bird x and y values 
 
 extern int score;
 //This represents score of current/last game
-
 
 extern char textbuffer[4][16];
 /* Declare text buffer for display output */

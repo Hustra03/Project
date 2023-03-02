@@ -61,11 +61,10 @@ void displayMenu()
 	{
 		display_string(0, "Menu - BTN 1-4");
 		display_string(1, "Jump - BTN 1");
-		display_string(2, "Exit Game - Sw 1-4 true");
-		display_string(3, "Back");
+		display_string(2, "");
+		display_string(3, "4. Back");
 	}
 	return;
-	display_update();
 }
 // Erik Paulinder 2023-02-27
 

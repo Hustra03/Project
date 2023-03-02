@@ -7,15 +7,65 @@
 
 int main(void)
 {
+	
+	SYSKEY = 0xAA996655;
+	/* Unlock OSCCON, step 1 */
+
+	SYSKEY = 0x556699AA; /* Unlock OSCCON, step 2 */
+	while (OSCCON & (1 << 21))
+		;				  /* Wait until PBDIV ready */
+	OSCCONCLR = 0x180000; /* clear PBDIV bit <0,1> */
+	while (OSCCON & (1 << 21))
+		;		  /* Wait until PBDIV ready */
+	SYSKEY = 0x0; /* Lock OSCCON */
+
+	/* Set up output pins */
+	AD1PCFG = 0xFFFF;
+	ODCE = 0x0;
+	TRISECLR = 0xFF;
+	PORTE = 0x0;
+
+	/* Output pins for display signals */
+	PORTF = 0xFFFF;
+	PORTG = (1 << 9);
+	ODCF = 0x0;
+	ODCG = 0x0;
+	TRISFCLR = 0x70;
+	TRISGCLR = 0x200;
+
+	/* Set up input pins */
+	TRISDSET = (1 << 8);
+	TRISFSET = (1 << 1);
+
+	/* Set up SPI as master */
+	SPI2CON = 0;
+	SPI2BRG = 4;
+	/* SPI2STAT bit SPIROV = 0; */
+	SPI2STATCLR = 0x40;
+	/* SPI2CON bit CKP = 1; */
+	SPI2CONSET = 0x40;
+	/* SPI2CON bit MSTEN = 1; */
+	SPI2CONSET = 0x20;
+	/* SPI2CON bit ON = 1; */
+	SPI2CONSET = 0x8000;
+
+	// Erik Paulinder
+	// initaialize values
+
 	init();
+	display_init();
 	display_string(0, "Flappy Bird");
 	display_string(1, "By:");
 	display_string(2, "Erik Paulinder");
 	display_string(3, "Mohammed Louai Alayoubi");
 	display_update();
-	delay(100);
+	menuChoice=0;
+	delay(1500);
 	while(1)
 	{
+		
+		displayMenu();
+		display_update();
 		menu();
 	}
 	return 0;
@@ -24,26 +74,23 @@ int main(void)
 
 void menu(void) // the menu should not be run when the game is ongoing
 {
-	int button1 = 0; // Change to current binary value of input from button 1
-	if (button1 != 0)
-	{
 		if (currentmenu == 0) // Standard/Start menu
 		{
 			switch (menuChoice)
 			{
 			case 1:
-				gameStart();			 // Starts game with current options
-				currentmenu = 3; // jump to menu number 3 when menu is called, which is the gameover men
+				gameStart();// Starts game with current options
 				break;
 			case 2:
-				//menuChoice = 1; //Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
+				//Changes menu to difficulty menu //should change in the interrupet depends on the button pressed
 				currentmenu = 1; // jump to difficulty menu
 				break;
 			case 3:
 				currentmenu = 2; // jump to highscore menu / Changes menu to high score screen menuChoice = 2;
 				break;
 			case 4:
-				currentmenu = 4; // help menu to check the controls keys
+				currentmenu = 3; // help menu to check the controls keys
+				menuChoice=0;
 				break;
 			}
 		}
@@ -66,43 +113,26 @@ void menu(void) // the menu should not be run when the game is ongoing
 				break;
 			}
 		}
-		if (currentmenu == 2) // Highscore menu
+		if ((currentmenu == 2)) // Highscore menu
 		{
 			switch (menuChoice)
 			{
-			case 4: // There is only Case 4, since any the 3 other options (The High Scores) are not interactable with
-				currentmenu = 0; //Go back to Start Menu
-				break;
-			}
-		}
-		if (currentmenu == 3) // Game Over Menu
-		{
-			switch (menuChoice)
-			{
-			case 1:
-				// Increase Inital By One  
-				break;
-			case 2:
-				// Decrease Inital By One  
-				break;
-			case 3:
-				// Go To Next Inital 
 			case 4:
-				currentmenu = 0;//Go back to Start Menu, Add in a confirm since this prevents entering complete high score initals
+				currentmenu = 0;
 				break;
 			}
 		}
-		if (currentmenu == 4)
+		if ((currentmenu == 3))
 		{
 			switch (menuChoice)
 			{
-			case 4: // There is only Case 4, since any the 3 other options (The High Scores) are not interactable with
-				currentmenu = 0; //Go back to Start Menu
+			case 4:
+				//Go back to Start Menu
+				currentmenu = 0;
 				break;
 			}
 		}
-		displayMenu();
-	}
+		
 	return;
 }
 
@@ -118,12 +148,12 @@ void gameStart(void)
 	// Array length no longer dependent on difficulty, now constant?
 	
 
-	int gametrue = 0;//Determines if it is a game over
+	int gametrue = 1;//Determines if it is a game over
 
 	int size= 10-2*difficulty;//Easy = 1, Normal = 2, Hard = 3 => Size = 8, 6, or 4 
 	// initalize game start values
 
-	while (gametrue == 0) //This contains one instance of the game, frame per frame
+	while (gametrue == 1) //This contains one instance of the game, frame per frame
 	{
 		delay(100); // Change to change over time, currently ten frames per secound
 
@@ -139,7 +169,7 @@ void gameStart(void)
 			birdy=30;
 		}
 		if (birdy<=0)
-		{gametrue=1;}
+		{gametrue=0;}
 		//Above checks if bird is out of bounds, if above simply reduce value, if below game over because the bird has fallen
 
 		for (i = 0; i < 4; i++) //Performs following tasks for each obstacle, x and y values connected
@@ -159,7 +189,7 @@ void gameStart(void)
 				}
 				else
 				{
-					gametrue =1;// If bird and obstacle[i] do collide, Game Over
+					gametrue =0;// If bird and obstacle[i] do collide, Game Over
 				}
 			}
 
@@ -169,17 +199,42 @@ void gameStart(void)
 		displayGame(ObstacleX, ObstacleY);//Sends new obstacles to DisplayGame
 	}
 	//Game is over when this is shown
-	display_string(0,"Game Over!");
-
 	IntToCharArray(score);//Converts int score to char[] scoreArray with correct characters. 
-
+	display_string(0,"Game Over!");
 	display_string(1,TextString);
+	display_string(2,"");
+	display_string(3,"");
 	display_update();
+
+	
+	
+
 	delay(100);
 	while (getbtns()==0)
 	{
 		display_string(0,"Game Over!");
 		display_string(1,TextString);
+		display_string(2,"");
+		display_string(3,"");
 		display_update();
 	}//Shows game over screen until player presses some button, in order to ensure visability
+
+
+		if (currentmenu == 4) // Game Over Menu
+		{
+			switch (menuChoice)
+			{
+			case 1:
+				// Increase Inital By One  
+				break;
+			case 2:
+				// Decrease Inital By One  
+				break;
+			case 3:
+				// Go To Next Inital 
+			case 4:
+				currentmenu = 0;//Go back to Start Menu, Add in a confirm since this prevents entering complete high score initals
+				break;
+			}
+		}
 }
