@@ -82,112 +82,118 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 	int i, j, g; // Declaring for-loop variables
 	int yCount = 4;
 	int holesize = 0xff;
-	if (difficulty==2)
+	if (difficulty == 2)
 	{
-		holesize = 0xFC;
+		holesize = 0x3F;
 	}
-	if (difficulty==3)
+	if (difficulty == 3)
 	{
-		holesize = 0xF0;
+		holesize = 0x0F;
 	}
-	
-	for (i = 0; i < 4; i++)
+	//Sets size/value of hole, for this display the binary value is reversed, 1 = 0
+	//FF = 8 bits zero, 3F = 6 bits zero, ,0F = 4 bits zero, 
+	for (i = 0; i < 4; i++)//Because it will only write on 1/4 of the screen with display image, create it 4 times
 	{
 		yCount = 4;
-		for (j = 0; j < 128; j++)
+		for (j = 0; j < 128; j++)//Fill every position in the array
 		{
-
-			for (g = 0; g < 4; g++)
+			for (g = 0; g < 8; g++)//Check each obstacle 
 			{
-				if ((ObstacleX[g] < (i + 1) * 32) && (ObstacleX[g] > (i * 32)))
+				if ((ObstacleX[g] < (i + 1) * 32) && (ObstacleX[g] > (i * 32)))//Checks if this obstacle x is located in current zone
 				{
-					if (j % 32 == ObstacleX[g] % 32)
+					if (j % 32 == ObstacleX[g] % 32)//If so, checks that current value ObstacleX is the same as j, in intervall of 32
 					{
-						if (yCount==3 && ObstacleY[g]==4)
+						if (yCount == 3 && ObstacleY[g] == 4)
 						{
 							game[j] = holesize;
 						}
-						else if (yCount==2 && ObstacleY[g]==3)
+						else if (yCount == 2 && ObstacleY[g] == 3)
 						{
 							game[j] = holesize;
 						}
-						else if (yCount==1 && ObstacleY[g]==2)
+						else if (yCount == 1 && ObstacleY[g] == 2)
 						{
 							game[j] = holesize;
 						}
-						else if (yCount==0 && ObstacleY[g]==1)
+						else if (yCount == 0 && ObstacleY[g] == 1)
 						{
 							game[j] = holesize;
-						}
+						}//Above checks so that the hole is placed in correct y-value, aka flag(?)
 						else
-						{game[j] = 0x00;}
+						{
+							game[j] = 0x00;
+						}//If not correct y value, but correct x-value, fill the entire thing
 					}
 					else
 					{
 						game[j] = 0xFF;
-					}
+					}//If not correct x, set all to 1, which in display means 0
 				}
-				if ((birdx< (i + 1) * 32) && (birdx > (i * 32)))
+				if ((birdx < (i + 1) * 32) && (birdx >= (i * 32)))
 				{
 					if (j % 32 == birdx % 32)
 					{
-						if (yCount==3 && (32>=birdy && birdy>24))
+						if (yCount == 3 && (32 > birdy && birdy >= 24))
 						{
-							if (birdy%8==0)
+							if (birdy % 8 == 0)
 							{
-							game[j]= ~(0x80);
+								game[j] = ~(0x80);
 							}
 							else
 							{
-								game[j]= ~(0x80 >> (birdy%8));
+								game[j] = ~(0x80 >> (birdy % 8));
 							}
 						}
-						else if (yCount==2 && (24>=birdy && birdy>16))
+						else if (yCount == 2 && (24 > birdy && birdy >= 16))
 						{
-							if (birdy%8==0)
+							if (birdy % 8 == 0)
 							{
-							game[j]= ~(0x80);
+								game[j] = ~(0x80);
 							}
 							else
 							{
-								game[j]= ~(0x80 >> (birdy%8));
+								game[j] = ~(0x80 >> (birdy % 8));
 							}
 						}
-						else if (yCount==1 && (16>=birdy && birdy>8)) 
+						else if (yCount == 1 && (16 > birdy && birdy >= 8))
 						{
-							if (birdy%8==0)
+							if (birdy % 8 == 0)
 							{
-							game[j]= ~(0x80);
+								game[j] = ~(0x80);
 							}
 							else
 							{
-								game[j]= ~(0x80 >> (birdy%8));
+								game[j] = ~(0x80 >> (birdy % 8));
 							}
 						}
-						else if (yCount==0 && (8>=birdy && birdy>0))
+						else if (yCount == 0 && (8 > birdy && birdy >= 0))
 						{
-							if (birdy%8==0)
+							if (birdy % 8 == 0)
 							{
-							game[j]= ~(0x80);
+								game[j] = ~(0x80);
 							}
 							else
 							{
-								game[j]= ~(0x80 >> (birdy%8));
+								game[j] = ~(0x80 >> (birdy % 8));
 							}
 						}
 					}
-				}
+				}//Similar to obstacles, first checks if correct interval of x, then if correct x, then correct y, if so set one pixel, with y value offset from top
 			}
 			if (j % 32 == 0)
 			{
 				yCount -= 1;
-			}
+			}//Increments yCount, for which 1/4 currently located in
+			if (yCount==0)
+			{
+				game[j] = game[j] && (0x01);
+			}//Is intended to create a ground, if implemented correctly
+			
 		}
-		display_image(32 * i, game);
+		display_image(32 * i, game);//Send current array, with current 1/4 of map, to display_image, to show on OLED-Screen
 	}
 	// Creates a Bit-Map Dependent on current game status, setting obstacle and bird x and y to one.
 	// Erik Paulinder 2023-02-27
-
 	return;
 }
 // Erik Paulinder 2023-02-27
