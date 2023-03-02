@@ -6,8 +6,8 @@
 char* my_strcat(char *s1, const char *s2)
 {
     //Pointer should not null pointer
-    if((s1 == NULL) && (s2 == NULL))
-        return NULL;
+    if((s1 == '\0') && (s2 == '\0'))
+        return '\0';
     //Create copy of s1
     char *start = s1;
     //Find the end of the destination string
