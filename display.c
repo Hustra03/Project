@@ -131,56 +131,152 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 						game[j] = 0xFF;
 					}//If not correct x, set all to 1, which in display means 0
 				}
+				int birdelex1=0;
+				int birdelex2=0;
 				if ((birdx < (i + 1) * 32) && (birdx >= (i * 32)))
 				{
 					if (j % 32 == birdx % 32)
 					{
-						if (yCount == 3 && (32 > birdy && birdy >= 24))
+						if (birdelex1==1)
 						{
-							if (birdy % 8 == 0)
+							game[j] = ~(0x01);
+							birdelex1=1;
+						}
+						else if (yCount == 3 && (32 > birdy && birdy >= 24))
+						{
+							if ((birdy) % 8 == 0)
 							{
-								game[j] = ~(0x80);
+								game[j] = ~(0xC0);
 							}
 							else
 							{
-								game[j] = ~(0x80 >> (birdy % 8));
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex1=1;
 							}
 						}
 						else if (yCount == 2 && (24 > birdy && birdy >= 16))
 						{
-							if (birdy % 8 == 0)
+							if ((birdy) % 8 == 0)
 							{
-								game[j] = ~(0x80);
+								game[j] = ~(0xC0);
 							}
 							else
 							{
-								game[j] = ~(0x80 >> (birdy % 8));
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex1=1;
 							}
 						}
 						else if (yCount == 1 && (16 > birdy && birdy >= 8))
 						{
-							if (birdy % 8 == 0)
+							if ((birdy) % 8 == 0)
 							{
-								game[j] = ~(0x80);
+								game[j] = ~(0xC0);
 							}
 							else
 							{
-								game[j] = ~(0x80 >> (birdy % 8));
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex1=1;
 							}
 						}
 						else if (yCount == 0 && (8 > birdy && birdy >= 0))
 						{
-							if (birdy % 8 == 0)
+							if ((birdy) % 8 == 0)
 							{
-								game[j] = ~(0x80);
+								game[j] = ~(0xC0);
 							}
 							else
 							{
-								game[j] = ~(0x80 >> (birdy % 8));
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex1=1;
 							}
 						}
 					}
-				}//Similar to obstacles, first checks if correct interval of x, then if correct x, then correct y, if so set one pixel, with y value offset from top
+				}
+				//Similar to obstacles, first checks if correct interval of x, then if correct x, then correct y, if so set one pixel, with y value offset from top
+				
+				if (((birdx+1) < (i + 1) * 32) && ((birdx+1) >= (i * 32)))
+				{
+					if (j % 32 == (birdx+1) % 32)
+					{
+						if (birdelex2==1)
+						{
+							game[j] = ~(0x01);
+							birdelex2=0;
+						}
+						else if (yCount == 3 && (32 > birdy && birdy >= 24))
+						{
+							if ((birdy) % 8 == 0)
+							{
+								game[j] = ~(0xC0);
+							}
+							else
+							{
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex2=1;
+							}
+						}
+						else if (yCount == 2 && (24 > birdy && birdy >= 16))
+						{
+							if ((birdy) % 8 == 0)
+							{
+								game[j] = ~(0xC0);
+							}
+							else
+							{
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex2=1;
+							}
+						}
+						else if (yCount == 1 && (16 > birdy && birdy >= 8))
+						{
+							if ((birdy) % 8 == 0)
+							{
+								game[j] = ~(0xC0);
+							}
+							else
+							{
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex2=1;
+							}
+						}
+						else if (yCount == 0 && (8 > birdy && birdy >= 0))
+						{
+							if ((birdy) % 8 == 0)
+							{
+								game[j] = ~(0xC0);
+							}
+							else
+							{
+								game[j] = ~(0xC0 >> (birdy % 8));
+							}
+							if(birdy % 8==6)
+							{
+								birdelex2=1;
+							}
+						}
+					}
+				}
 			}
 		}
 		display_image(32 * i, game);//Send current array, with current 1/4 of map, to display_image, to show on OLED-Screen

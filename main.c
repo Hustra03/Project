@@ -187,15 +187,15 @@ void gameStart(void)
 	while (gametrue == 1)
 	{
 		delay(100); // Change to change over time, currently one frame per secound
-		if (((getbtns() >> 2) & 0x1 == 0x1 || ((PORTF >> 1) & 0x1) == 0x1) && birdy <= 32)
+		if (((getbtns() >> 2) & 0x1 == 0x1 ) && birdy <= 32)
 		{
 			birdy += 1;
 		}
-		else
+		if ((((PORTF >> 1) & 0x1) == 0x1) && birdy > 0)
 		{
 			birdy -= 1;
 		}
-		if (((score + 1) % 5 == 4) && (size > 4)) // Increased difficulty over time, not tested if correctly implemented
+		if (((score) % 20 == 19) && (size > 4)) // Increased difficulty over time, not tested if correctly implemented
 		{
 			difficulty += 1;
 			size -= 2;
@@ -217,11 +217,11 @@ void gameStart(void)
 				ObstacleY[i] = (rand() % (4)) + 1;
 			} // Checks if obstacle x value is less than zero, if so move to the far right/x=127, and generate a new y-value
 
-			if (ObstacleX[i] == birdx || (((getbtns() & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx + 1)) || ((((getbtns() >> 1) & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx - 1)))
+			if ((ObstacleX[i] == birdx || ObstacleX[i] == birdx+1 || ((getbtns() & 0x1) == 0x1 && ((ObstacleX[i] == birdx + 1)||(ObstacleX[i] == birdx + 2))) || (((((getbtns() >> 1) & 0x1) == 0x1) && ((ObstacleX[i] == birdx -1)||(ObstacleX[i] == birdx))))))
 			{ // Checks if player x value equals Obstacle[i] x, and if currently moving, if located one space before or after, in order to avoid wallclipping
 				// Erik Paulinder
 
-				if ((birdy < ((ObstacleY[i] - 1) * 8) + size) && (birdy > (ObstacleY[i] - 1) * 8))
+				if (((birdy+1) < ((ObstacleY[i] - 1) * 8) + size) && (birdy > (ObstacleY[i] - 1) * 8))
 				{ // Above controlled collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
 
 					score += 1; // If not collison
@@ -231,7 +231,7 @@ void gameStart(void)
 					gametrue = 0; // Collision, Game Over
 				}
 			}
-			ObstacleX[i] -= 1; // Decreases x-value by one
+			//ObstacleX[i] -= 1; // Decreases x-value by one
 		}
 		if (((getbtns() & 0x1) == 0x1 && birdx < 120)) // Button 2 moves right, if birdx not greater than 120
 		{
@@ -319,7 +319,7 @@ void gameStart(void)
 				{
 					confirmexit += 1;
 				}
-				if (confirmexit == 2)
+				if (confirmexit >= 2)
 				{
 					highscoretrue == 0;
 				}
