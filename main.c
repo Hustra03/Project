@@ -203,10 +203,10 @@ void gameStart(void)
 		{
 			birdy = 30;
 		}
-		/*if (birdy == 0) // Checks that player is not below game area
+		if (birdy == 0) // Checks that player is not below game area
 		{
 			gametrue = 0;
-		}*/
+		}
 		for (i = 0; i < 4; i++) // Performs following for every obstacle
 		{
 			if (ObstacleX[i] <= 0)
@@ -215,7 +215,7 @@ void gameStart(void)
 				ObstacleY[i] = (rand() % (4)) + 1;
 			} // Checks if obstacle x value is less than zero, if so move to the far right/x=127, and generate a new y-value
 
-			/*if (ObstacleX[i] == birdx || (((getbtns() & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx + 1)) || ((((getbtns() >> 1) & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx - 1)))
+			if (ObstacleX[i] == birdx || (((getbtns() & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx + 1)) || ((((getbtns() >> 1) & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx - 1)))
 			{ // Checks if player x value equals Obstacle[i] x, and if currently moving, if located one space before or after, in order to avoid wallclipping
 				// Erik Paulinder
 
@@ -228,7 +228,7 @@ void gameStart(void)
 				{
 					gametrue = 0; // Collision, Game Over
 				}
-			}*/
+			}
 			ObstacleX[i] -= 1; // Decreases x-value by one
 		}
 		if (((getbtns() & 0x1) == 0x1 && birdx < 120)) // Button 2 moves right, if birdx not greater than 120
@@ -253,8 +253,10 @@ void gameStart(void)
 	delay(100);
 	while (1)
 	{
-		if((getbtns() != 0x0) || (((PORTF >> 1) && 0x1) != 0x0))
-		{break;}
+		if ((getbtns() != 0x0) || (((PORTF >> 1) && 0x1) != 0x0))
+		{
+			break;
+		}
 		display_string(0, "Game Over!");
 		display_string(1, TextString);
 		display_string(2, "");
@@ -270,21 +272,95 @@ void gameStart(void)
 		{
 			highscoretrue = 1;
 			highscoreindex = i;
-			
+
 			for (j = i; j < 2; j++)
 			{
-				highscores[j]=highscores[j+1];
+				highscores[j] = highscores[j + 1];
 			}
 			highscores[highscoreindex] = score;
-			i=3;
+			highscores[highscoreindex] = 0;
+			i = 3;
 		}
 	}
 
-
+	int initial = 0;
+	int initalnumber = 2;
+	int confirmexit = 0;
 	if (highscoretrue == 1)
 	{
 
+		while (initalnumber >= 0)
+		{
+			switch (menuChoice)
+			{
+			case 1:
+				if (initial < 5)
+				{
+					initial += 1;
+				}
+				confirmexit = 0;
+				break;
+			case 2:
+				if (initial > 1)
+				{
+					initial -= 1;
+				}
+				confirmexit = 0;
+				break;
+			case 3:
+				confirmexit = 0;
+				initalnumber -= 1;
+				initial = 0;
+				highscores[highscoreindex] += (10 + initial * 10 ^ (initalnumber));
+				break;
+			case 3:
+				if (confirmexit < 2)
+				{
+					confirmexit += 1;
+				}
+				if (confirmexit == 2)
+				{
+					gametrue == 0;
+				}
+				break;
+			}
+
+			display_string(0, "1. Increase Inital");
+			display_string(1, "2. Decrease Inital");
+			display_string(2, "3. Current Inital");
+			if (initial == 0)
+			{
+				display_string(3, "Current Inital: A");
+			}
+			if (initial == 1)
+			{
+				display_string(3, "Current Inital: B");
+			}
+			if (initial == 2)
+			{
+				display_string(3, "Current Inital: C");
+			}
+			if (initial == 3)
+			{
+				display_string(3, "Current Inital: D");
+			}
+			if (initial == 4)
+			{
+				display_string(3, "Current Inital: E");
+			}
+			if (initial == 5)
+			{
+				display_string(3, "Current Inital: F");
+			}
+			if (confirmexit == 1)
+			{
+				display_string(0, "Do You Want To Exit");
+				display_string(1, "Score Will Still Be Stored");
+				display_string(2, "4. Confirm,");
+				display_string(3, "1-3. To Cancel");
+			}
+		}
 	}
-	
+
 	return;
 }

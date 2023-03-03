@@ -42,7 +42,7 @@ void _nmi_handler();
 void _on_reset();
 void _on_bootstrap();
 // define functions from birdfunctions.c
-char* my_strcat(char *s1, const char *s2);
+char *my_strcat(char *s1, const char *s2);
 
 void Write_score(int score, int name);
 void read_scoreboard();

@@ -140,8 +140,8 @@ void read_scoreboard(){
             j--; 
         }
 
-        for(int g=i*3;g<(i+1)*3;g++)
-        {my_strcat( dest, highscores[g-1]);}
+        /*for(int g=i*3;g<(i+1)*3;g++)
+        {my_strcat( dest, highscores[g-1]);}*/
 
 	    display_string(i,dest);
 	    display_update();

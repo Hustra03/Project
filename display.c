@@ -101,9 +101,9 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 			}//Increments yCount, for which 1/4 currently located in
 			for (g = 0; g < 4; g++)//Check each obstacle 
 			{
-				if (((ObstacleX[g] < (i + 1) * 32) && (ObstacleX[g] > (i * 32))) && (ObstacleX[g]!=0))//Checks if this obstacle x is located in current zone
+				if (((ObstacleX[g] < (i + 1) * 32) && (ObstacleX[g] >= (i * 32))))//Checks if this obstacle x is located in current zone
 				{
-					if (j % 32 == (ObstacleX[g]+1) % 32)//If so, checks that current value ObstacleX is the same as j, in intervall of 32
+					if (j % 32 == (ObstacleX[g]) % 32)//If so, checks that current value ObstacleX is the same as j, in intervall of 32
 					{
 						if (yCount == 3 && ObstacleY[g] == 4)
 						{
