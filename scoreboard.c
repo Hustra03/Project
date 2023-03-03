@@ -16,22 +16,22 @@ void numtohexa(int n, int x) // s char, n number and x is flag if this is a numb
     if (x ==1){
             if (n!=0){
 
-                if(n == 10){
+                if(n == 0){
                     CharString="A";
                 }
-                else if(n == 11){
+                else if(n == 1){
                     CharString="B";
                 }
-                else if(n == 12){
+                else if(n == 2){
                     CharString="C";
                 }
-                else if(n == 13){
+                else if(n == 3){
                     CharString="D";
                 }
-                else if(n == 14){
+                else if(n == 4){
                     CharString="E";
                 }
-                else if(n == 15){
+                else if(n == 5){
                     CharString="F";
                 }
 
@@ -98,6 +98,7 @@ void read_scoreboard(){
     int number;
     int x,j;
     char* boardnum;
+    int digits=0;
     for (i = 0; i < NUMBER_OF_HIGHSCORE; i++)
     {
 
@@ -120,24 +121,25 @@ void read_scoreboard(){
         my_strcat( dest, str );
         
         x= highscores[i+3];
-        int j = 4;
-        while (j !=0)
+        int j = 0;
+        while (j !=4) 
         {
-            x = x%100;
-            numtohexa(x,1);
+            digits = x /1000;
+            numtohexa((digits%10),1);
             my_strcat( dest, CharString); 
-            x = x/100;
-            j--; 
+            j++; 
+            x=x*10;
+
         }
         number = highscores[i];
-        j = 4;
-        while (j !=0)
+        j = 0;
+        while (j !=4)
         {
-            number = number%10;
-	        numtohexa(number,0);
+            digits = number /1000;
+	        numtohexa((digits%10),0);
             my_strcat( dest, NumString);
-            number = number/10;
-            j--; 
+            j++; 
+            number=number*10;
         }
 
         /*for(int g=i*3;g<(i+1)*3;g++)
