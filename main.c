@@ -1,6 +1,7 @@
 #include <stdint.h>	 /* Declarations of uint_32 and the like */
 #include <pic32mx.h> /* Declarations of system-specific addresses etc */
 #include <stdio.h>	 /* Declarations of rand and the like */
+#include <math.h>
 #include "flappybird.h"
 
 int main(void)
@@ -194,8 +195,9 @@ void gameStart(void)
 		{
 			birdy -= 1;
 		}
-		if ((score + 1 % 100 == 0) && (size > 4)) // Increased difficulty over time, not tested if correctly implemented
+		if (((score + 1) % 5 == 4) && (size > 4)) // Increased difficulty over time, not tested if correctly implemented
 		{
+			difficulty += 1;
 			size -= 2;
 		}
 
@@ -251,45 +253,33 @@ void gameStart(void)
 	display_string(3, "");
 	display_update();
 	delay(100);
-	while (1)
-	{
-		if ((getbtns() != 0x0) || (((PORTF >> 1) && 0x1) != 0x0))
-		{
-			break;
-		}
-		display_string(0, "Game Over!");
-		display_string(1, TextString);
-		display_string(2, "");
-		display_string(3, "");
-		display_update();
-	} // Shows game over screen until player presses some button, in order to score is seen
 
 	int highscoretrue = 0;
 	int highscoreindex = 0;
 	for (i = 0; i < 3; i++)
 	{
-		if (score > highscores[i])
+		if ((score > highscores[i]) && (highscoretrue == 0))
 		{
 			highscoretrue = 1;
 			highscoreindex = i;
 
-			for (j = i; j < 2; j++)
+			for (j = 3; j < i; j++)
 			{
-				highscores[j] = highscores[j + 1];
-				highscores[j+3] = highscores[j + 4];
+				highscores[j] = highscores[j-1];
+				highscores[j+3] = highscores[j+2];
 			}
 			highscores[highscoreindex] = score;
-			highscores[highscoreindex] = 0;
-			i = 3;
+			
 		}
 	}
 
 	int initial = 0;
 	int initalnumber = 3;
 	int confirmexit = 0;
+
 	if (highscoretrue == 1)
 	{
-
+	highscores[highscoreindex+3] = 0;
 		while (initalnumber >= 0)
 		{
 			switch (menuChoice)
@@ -300,58 +290,69 @@ void gameStart(void)
 					initial += 1;
 				}
 				confirmexit = 0;
+				menuChoice=0;
 				break;
 			case 2:
-				if (initial > 1)
+				confirmexit = 0;
+				if(initalnumber==3)
+				{highscores[highscoreindex+3] +=  initial *1000;}
+				if(initalnumber==2)
+				{highscores[highscoreindex+3] +=  initial *100;}
+				if(initalnumber==1)
+				{highscores[highscoreindex+3] +=  initial *10;}
+				if(initalnumber==0)
+				{highscores[highscoreindex+3] +=  initial;}
+				initial = 0;
+				initalnumber -= 1;
+				menuChoice=0;
+				break;
+			case 3:
+				if (initial >= 1)
 				{
 					initial -= 1;
 				}
 				confirmexit = 0;
+				menuChoice=0;
 				break;
-			case 3:
-				confirmexit = 0;
-				initalnumber -= 1;
-				initial = 0;
-				highscores[highscoreindex+3] +=  initial * 10 ^ (initalnumber);
-				break;
-			case 3:
+			case 4:
 				if (confirmexit < 2)
 				{
 					confirmexit += 1;
 				}
 				if (confirmexit == 2)
 				{
-					gametrue == 0;
+					highscoretrue == 0;
 				}
+				menuChoice=0;
 				break;
 			}
 
 			display_string(0, "1. Increase Inital");
 			display_string(1, "2. Decrease Inital");
-			display_string(2, "3. Current Inital");
+			display_string(2, "3. Next Inital");
 			if (initial == 0)
 			{
-				display_string(3, "Current Inital: A");
+				display_string(3, "Current: A");
 			}
 			if (initial == 1)
 			{
-				display_string(3, "Current Inital: B");
+				display_string(3, "Current: B");
 			}
 			if (initial == 2)
 			{
-				display_string(3, "Current Inital: C");
+				display_string(3, "Current: C");
 			}
 			if (initial == 3)
 			{
-				display_string(3, "Current Inital: D");
+				display_string(3, "Current: D");
 			}
 			if (initial == 4)
 			{
-				display_string(3, "Current Inital: E");
+				display_string(3, "Current: E");
 			}
 			if (initial == 5)
 			{
-				display_string(3, "Current Inital: F");
+				display_string(3, "Current: F");
 			}
 			if (confirmexit == 1)
 			{
@@ -360,6 +361,7 @@ void gameStart(void)
 				display_string(2, "4. Confirm,");
 				display_string(3, "1-3. To Cancel");
 			}
+			display_update();
 		}
 	}
 

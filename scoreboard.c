@@ -14,7 +14,6 @@ void numtohexa(int n, int x) // s char, n number and x is flag if this is a numb
 {
     int i;
     if (x ==1){
-            if (n!=0){
 
                 if(n == 0){
                     CharString="A";
@@ -35,7 +34,6 @@ void numtohexa(int n, int x) // s char, n number and x is flag if this is a numb
                     CharString="F";
                 }
 
-            }
         }
     if (x ==0){
             if  (n == 0){
@@ -71,27 +69,6 @@ void numtohexa(int n, int x) // s char, n number and x is flag if this is a numb
 
     }
 }
-
-// Mohammed 2023-02-28
-void Write_score(int score, int name){
-    
-// compare the score with the highscore value in the memory in zero position is the highest
-    int replace_score; // which index to replace
-    int i, replace_index;
-    for (i = 0; i < NUMBER_OF_HIGHSCORE; i++){ 
-        if (score > highscores[i]){  
-            replace_index = i;
-        }
-    }    
-
-    if (replace_index != -1) { // look if there is a score we can change
-        highscores[replace_score] = score; // add the new score to the buffer
-        highscores[replace_score + 3] = name; // add the new name with the score   
-    }
-}
-
-
-
 // Mohammed 2023-02-28
 void read_scoreboard(){  
     int i;
@@ -101,7 +78,8 @@ void read_scoreboard(){
     int digits=0;
     for (i = 0; i < NUMBER_OF_HIGHSCORE; i++)
     {
-
+        CharString="";
+        NumString="";
 	    char* str = "Score";
 	    //num32asc(boardnum,(i+1));
 
@@ -122,7 +100,7 @@ void read_scoreboard(){
         
         x= highscores[i+3];
         int j = 0;
-        while (j !=4) 
+        while (j < 4) 
         {
             digits = x /1000;
             numtohexa((digits%10),1);
