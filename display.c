@@ -95,11 +95,15 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 		yCount = 4;
 		for (j = 0; j < 128; j++)//Fill every position in the array
 		{
-			for (g = 0; g < 8; g++)//Check each obstacle 
+			if (j % 32 == 0)
 			{
-				if ((ObstacleX[g] < (i + 1) * 32) && (ObstacleX[g] > (i * 32)))//Checks if this obstacle x is located in current zone
+				yCount -= 1;
+			}//Increments yCount, for which 1/4 currently located in
+			for (g = 0; g < 4; g++)//Check each obstacle 
+			{
+				if (((ObstacleX[g] < (i + 1) * 32) && (ObstacleX[g] > (i * 32))) && (ObstacleX[g]!=0))//Checks if this obstacle x is located in current zone
 				{
-					if (j % 32 == ObstacleX[g] % 32)//If so, checks that current value ObstacleX is the same as j, in intervall of 32
+					if (j % 32 == (ObstacleX[g]+1) % 32)//If so, checks that current value ObstacleX is the same as j, in intervall of 32
 					{
 						if (yCount == 3 && ObstacleY[g] == 4)
 						{
@@ -178,10 +182,6 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 					}
 				}//Similar to obstacles, first checks if correct interval of x, then if correct x, then correct y, if so set one pixel, with y value offset from top
 			}
-			if (j % 32 == 0)
-			{
-				yCount -= 1;
-			}//Increments yCount, for which 1/4 currently located in
 		}
 		display_image(32 * i, game);//Send current array, with current 1/4 of map, to display_image, to show on OLED-Screen
 	}

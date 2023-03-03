@@ -161,8 +161,8 @@ void gameStart(void)
 	birdy = 32;
 	int score = 0;
 
-	int ObstacleX[8] = {31, 63, 95, 127, 150, 180, 210};
-	int ObstacleY[8] = {2, 1, 4, 3, 1, 2, 3, 4};
+	int ObstacleX[4] = {31, 63, 95, 127};
+	int ObstacleY[4] = {2, 1, 4, 3};
 	// Array length no longer dependent on difficulty, now constant?
 	// initalize game start values
 
@@ -194,7 +194,7 @@ void gameStart(void)
 		{
 			birdy -= 1;
 		}
-		if ((score + 1 % 100 == 0) && (size > 4)) // Increased difficulty over time
+		if ((score + 1 % 100 == 0) && (size > 4)) // Increased difficulty over time, not tested if correctly implemented
 		{
 			size -= 2;
 		}
@@ -203,20 +203,19 @@ void gameStart(void)
 		{
 			birdy = 30;
 		}
-		if (birdy == 0) // Checks that player is not below game area
+		/*if (birdy == 0) // Checks that player is not below game area
 		{
 			gametrue = 0;
-		}
+		}*/
 		for (i = 0; i < 4; i++) // Performs following for every obstacle
 		{
-			ObstacleX[i] -= 1; // Decreases x-value by one
-			if (ObstacleX[i] < 0)
+			if (ObstacleX[i] <= 0)
 			{
-				ObstacleX[i] = 127;
+				ObstacleX[i] = 128;
 				ObstacleY[i] = (rand() % (4)) + 1;
 			} // Checks if obstacle x value is less than zero, if so move to the far right/x=127, and generate a new y-value
 
-			if (ObstacleX[i] == birdx || (((getbtns() & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx + 1)) || ((((getbtns() >> 1) & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx - 1)))
+			/*if (ObstacleX[i] == birdx || (((getbtns() & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx + 1)) || ((((getbtns() >> 1) & 0x1) == 0x1 && birdx < 120) && (ObstacleX[i] == birdx - 1)))
 			{ // Checks if player x value equals Obstacle[i] x, and if currently moving, if located one space before or after, in order to avoid wallclipping
 				// Erik Paulinder
 
@@ -229,7 +228,8 @@ void gameStart(void)
 				{
 					gametrue = 0; // Collision, Game Over
 				}
-			}
+			}*/
+			ObstacleX[i] -= 1; // Decreases x-value by one
 		}
 		if (((getbtns() & 0x1) == 0x1 && birdx < 120)) // Button 2 moves right, if birdx not greater than 120
 		{
@@ -270,6 +270,12 @@ void gameStart(void)
 		{
 			highscoretrue = 1;
 			highscoreindex = i;
+			
+			for (j = i; j < 2; j++)
+			{
+				highscores[j]=highscores[j+1];
+			}
+			highscores[highscoreindex] = score;
 			i=3;
 		}
 	}
@@ -278,9 +284,6 @@ void gameStart(void)
 	if (highscoretrue == 1)
 	{
 
-		highscores[highscoreindex] = score;
-		
-		
 	}
 	
 	return;
