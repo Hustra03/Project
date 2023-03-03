@@ -284,7 +284,7 @@ void gameStart(void)
 	}
 
 	int initial = 0;
-	int initalnumber = 2;
+	int initalnumber = 3;
 	int confirmexit = 0;
 	if (highscoretrue == 1)
 	{
@@ -311,7 +311,7 @@ void gameStart(void)
 				confirmexit = 0;
 				initalnumber -= 1;
 				initial = 0;
-				highscores[highscoreindex] += (10 + initial * 10 ^ (initalnumber));
+				highscores[highscoreindex+3] +=  initial * 10 ^ (initalnumber);
 				break;
 			case 3:
 				if (confirmexit < 2)
