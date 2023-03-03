@@ -276,6 +276,7 @@ void gameStart(void)
 			for (j = i; j < 2; j++)
 			{
 				highscores[j] = highscores[j + 1];
+				highscores[j+3] = highscores[j + 4];
 			}
 			highscores[highscoreindex] = score;
 			highscores[highscoreindex] = 0;
