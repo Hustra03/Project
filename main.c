@@ -195,7 +195,7 @@ void gameStart(void)
 		{
 			birdy -= 1;
 		}
-		if (((score + 1) % 5 == 4) && (size > 4)) // Increased difficulty over time, not tested if correctly implemented
+		if (((score + 1) % 20 == 19) && (size > 4)) // Increased difficulty over time, not tested if correctly implemented
 		{
 			difficulty += 1;
 			size -= 2;
