@@ -221,7 +221,7 @@ void gameStart(void)
 			{ // Checks if player x value equals Obstacle[i] x, and if currently moving, if located one space before or after, in order to avoid wallclipping
 				// Erik Paulinder
 
-				if (((birdy+1) < ((ObstacleY[i] - 1) * 8) + size) && (birdy > (ObstacleY[i] - 1) * 8))
+				if (((birdy) < ((ObstacleY[i] - 1) * 8) + size) && ((birdy-1) > (ObstacleY[i] - 1) * 8))
 				{ // Above controlled collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
 
 					score += 1; // If not collison
