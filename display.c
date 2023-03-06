@@ -90,17 +90,18 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 	{
 		holesize = 0xF0;
 	}
-	int birdelex1 = 0;
-	int birdelex2 = 0;
 	// Sets size/value of hole, for this display the binary value is reversed, 1 = 0
 	// FF = 8 bits zero, 3F = 6 bits zero, ,0F = 4 bits zero,
 	for (i = 0; i < 4; i++) // Because it will only write on 1/4 of the screen with display image, create it 4 times
 	{
-
 		yCount = 4;
+		birdelex1 = 0;
+		birdelex2 = 0;
 		for (j = 0; j < 128; j++) // Fill every position in the array
 		{
-			if (j % 32 == 0)
+			game[j]=0xFF;//Sets every position to 1, which is default which corresponds to black
+
+			if (j % 32 == 0) // Increments y-value, since each position is 1 byte, and it goes to next page each 32 steps
 			{
 				yCount -= 1;
 			}						// Increments yCount, for which 1/4 currently located in
@@ -110,19 +111,19 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 				{
 					if (j % 32 == (ObstacleX[g]) % 32) // If so, checks that current value ObstacleX is the same as j, in intervall of 32
 					{
-						if (yCount == 3 && ObstacleY[g] == 4)
+						if (yCount == ObstacleY[g])
 						{
 							game[j] = holesize;
 						}
-						else if (yCount == 2 && ObstacleY[g] == 3)
+						else if (yCount == ObstacleY[g])
 						{
 							game[j] = holesize;
 						}
-						else if (yCount == 1 && ObstacleY[g] == 2)
+						else if (yCount == ObstacleY[g])
 						{
 							game[j] = holesize;
 						}
-						else if (yCount == 0 && ObstacleY[g] == 1)
+						else if (yCount == ObstacleY[g])
 						{
 							game[j] = holesize;
 						} // Above checks so that the hole is placed in correct y-value, aka flag(?)
@@ -131,130 +132,54 @@ void displayGame(int ObstacleX[], int ObstacleY[])
 							game[j] = 0x00;
 						} // If not correct y value, but correct x-value, fill the entire thing
 					}
-					else
-					{
-						game[j] = 0xFF;
-					} // If not correct x, set all to 1, which in display means 0
 				}
-				if ((birdx < (i + 1) * 32) && (birdx >= (i * 32)))
+			}
+			if ((birdx < ((i + 1) * 32)) && (birdx >= (i * 32)))
+			{
+				if ((j % 32) == (birdx % 32))
 				{
-					if (j % 32 == birdx % 32)
+					if ((birdelex1 == 1))
 					{
-						if (birdelex1 == 1)
-						{
-							game[j] = ~(0x01);
-							birdelex1 = 0;
-						}
+						game[j] = ((game[j] & 0xFE) + ((0x00)&(0x01)));
+						birdelex1 = 0;
+					}
 
-						if (yCount == 3 && (32 > birdy && birdy >= 24))
+					if ((((yCount + 1) * 8) > birdy && birdy >= ((yCount)*8)))
+					{
+						if (((birdy) > ((yCount)*8)))
 						{
-							if (((birdy)  > 24))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy) == 24))
-							{
-								game[j] = ~(0x80);
-								birdelex1 = 1;
-							}
+							game[j] = ((game[j] & (0xFE7F >> ((birdy) % 8))));
 						}
-						else if (yCount == 2 && (24 > birdy && birdy >= 16))
+						else if ((birdy) == ((yCount)*8))
 						{
-							if (((birdy) > 16))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy) == 16))
-							{
-								game[j] = ~(0x80);
-								birdelex1 = 1;
-							}
-						}
-						else if (yCount == 1 && (16 > birdy && birdy >= 8))
-						{
-							if (((birdy) > 8))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy) == 8))
-							{
-								game[j] = ~(0x80);
-								birdelex1 = 1;
-							}
-						}
-						else if (yCount == 0 && (8 > birdy && birdy >= 0))
-						{
-							if (((birdy)  > 0))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy)  == 0))
-							{
-								game[j] = ~(0x80);
-								birdelex1 = 1;
-							}
+							game[j] = (game[j]&0x7F) + ((0x00)& (0x80));
+							birdelex1 = 1;
 						}
 					}
 				}
-				// Similar to obstacles, first checks if correct interval of x, then if correct x, then correct y, if so set one pixel, with y value offset from top
+			}
+			// Similar to obstacles, first checks if correct interval of x, then if correct x, then correct y, if so set one pixel, with y value offset from top
 
-				if (((birdx+1) < (i + 1) * 32) && ((birdx+1) >= (i * 32)))
+			if (((birdx + 1) < (i + 1) * 32) && ((birdx + 1) >= (i * 32)))
+			{
+				if ((j % 32) == ((birdx + 1) % 32))
 				{
-					if (j % 32 == (birdx+1) % 32)
+					if ((birdelex2 == 1))
 					{
-						if (birdelex2 == 1)
-						{
-							game[j] = ~(0x01);
-							birdelex2 = 0;
-						}
+						game[j] = ((game[j] & 0xFE) + ((0x00)&(0x01)));
+						birdelex2 = 0;
+					}
 
-						if (yCount == 3 && (32 > birdy && birdy >= 24))
+					if ((((yCount + 1) * 8) > birdy && birdy >= ((yCount)*8)))
+					{
+						if (((birdy) > ((yCount)*8)))
 						{
-							if (((birdy)  > 24))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy) == 24))
-							{
-								game[j] = ~(0x80);
-								birdelex2 = 1;
-							}
+							game[j] = ((game[j] & (0xFE7F >> ((birdy) % 8))));
 						}
-						else if (yCount == 2 && (24 > birdy && birdy >= 16))
+						else if ((birdy) == ((yCount)*8))
 						{
-							if (((birdy) > 16))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy) == 16))
-							{
-								game[j] = ~(0x80);
-								birdelex2 = 1;
-							}
-						}
-						else if (yCount == 1 && (16 > birdy && birdy >= 8))
-						{
-							if (((birdy) > 8))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy) == 8))
-							{
-								game[j] = ~(0x80);
-								birdelex2 = 1;
-							}
-						}
-						else if (yCount == 0 && (8 > birdy && birdy >= 0))
-						{
-							if (((birdy)  > 0))
-							{
-								game[j] = ~(0xC0 >> ((birdy-1) % 8));
-							}
-							if (((birdy)  == 0))
-							{
-								game[j] = ~(0x80);
-								birdelex2 = 1;
-							}
+							game[j] = (game[j]&0x7F) + ((0x00)& (0x80));
+							birdelex2 = 1;
 						}
 					}
 				}

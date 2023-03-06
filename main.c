@@ -163,13 +163,14 @@ void gameStart(void)
 	int score = 0;
 
 	int ObstacleX[4] = {31, 63, 95, 127};
-	int ObstacleY[4] = {2, 1, 4, 3};
+	int ObstacleY[4] = {1, 0, 3, 2};
 	// Array length no longer dependent on difficulty, now constant?
 	// initalize game start values
 
 	int gametrue = 1;
-
+	int lastscore = 5;
 	int size = 0;
+	int startdifficulty = difficulty;
 	if (difficulty == 1)
 	{
 		size = 8;
@@ -187,11 +188,11 @@ void gameStart(void)
 	while (gametrue == 1)
 	{
 		delay(100); // Change to change over time, currently one frame per secound
-		if (((getbtns() >> 2) & 0x1 == 0x1 ) && birdy <= 32)
+		if ((((((getbtns() >> 2) & 0x1 == 0x1) || (((PORTF >> 1) & 0x1))) == 0x1)) && birdy <= 31)
 		{
 			birdy += 1;
 		}
-		if ((((PORTF >> 1) & 0x1) == 0x1) && birdy > 0)
+		else
 		{
 			birdy -= 1;
 		}
@@ -214,24 +215,28 @@ void gameStart(void)
 			if (ObstacleX[i] <= 0)
 			{
 				ObstacleX[i] = 128;
-				ObstacleY[i] = (rand() % (4)) + 1;
+				ObstacleY[i] = (rand() % (3)) + 1;
 			} // Checks if obstacle x value is less than zero, if so move to the far right/x=127, and generate a new y-value
 
-			if ((ObstacleX[i] == birdx || ObstacleX[i] == birdx+1 || ((getbtns() & 0x1) == 0x1 && ((ObstacleX[i] == birdx + 1)||(ObstacleX[i] == birdx + 2))) || (((((getbtns() >> 1) & 0x1) == 0x1) && ((ObstacleX[i] == birdx -1)||(ObstacleX[i] == birdx))))))
+			if ((ObstacleX[i] == birdx || ObstacleX[i] == birdx + 1 || ((getbtns() & 0x1) == 0x1 && ((ObstacleX[i] == birdx + 1) || (ObstacleX[i] == birdx + 2))) || (((((getbtns() >> 1) & 0x1) == 0x1) && ((ObstacleX[i] == birdx - 1) || (ObstacleX[i] == birdx))))))
 			{ // Checks if player x value equals Obstacle[i] x, and if currently moving, if located one space before or after, in order to avoid wallclipping
 				// Erik Paulinder
 
-				if (((birdy) < ((ObstacleY[i] - 1) * 8) + size) && ((birdy-1) > (ObstacleY[i] - 1) * 8))
+				if (((birdy) < ((ObstacleY[i]) * 8) + size) && ((birdy) > (ObstacleY[i]) * 8))
 				{ // Above controlled collision, if between ObstacleY*8, and ObstacleY*8 + size, then ok, if not game over
 
-					score += 1; // If not collison
+					if (lastscore != i)
+					{
+						score += 1; // If not collison
+						lastscore = i;
+					}
 				}
 				else
 				{
 					gametrue = 0; // Collision, Game Over
 				}
 			}
-			//ObstacleX[i] -= 1; // Decreases x-value by one
+			ObstacleX[i] -= 1; // Decreases x-value by one
 		}
 		if (((getbtns() & 0x1) == 0x1 && birdx < 120)) // Button 2 moves right, if birdx not greater than 120
 		{
@@ -252,7 +257,7 @@ void gameStart(void)
 	display_string(2, "");
 	display_string(3, "");
 	display_update();
-	delay(100);
+	delay(500);
 
 	int highscoretrue = 0;
 	int highscoreindex = 0;
@@ -265,21 +270,19 @@ void gameStart(void)
 
 			for (j = 3; j < i; j++)
 			{
-				highscores[j] = highscores[j-1];
-				highscores[j+3] = highscores[j+2];
+				highscores[j] = highscores[j - 1];
+				highscores[j + 3] = highscores[j + 2];
 			}
 			highscores[highscoreindex] = score;
-			
 		}
 	}
-
+	difficulty = startdifficulty;
 	int initial = 0;
 	int initalnumber = 3;
-	int confirmexit = 0;
 
 	if (highscoretrue == 1)
 	{
-	highscores[highscoreindex+3] = 0;
+		highscores[highscoreindex + 3] = 0;
 		while (initalnumber >= 0)
 		{
 			switch (menuChoice)
@@ -289,41 +292,36 @@ void gameStart(void)
 				{
 					initial += 1;
 				}
-				confirmexit = 0;
-				menuChoice=0;
+				menuChoice = 0;
 				break;
 			case 2:
-				confirmexit = 0;
-				if(initalnumber==3)
-				{highscores[highscoreindex+3] +=  initial *1000;}
-				if(initalnumber==2)
-				{highscores[highscoreindex+3] +=  initial *100;}
-				if(initalnumber==1)
-				{highscores[highscoreindex+3] +=  initial *10;}
-				if(initalnumber==0)
-				{highscores[highscoreindex+3] +=  initial;}
+				if (initalnumber == 3)
+				{
+					highscores[highscoreindex + 3] += initial * 1000;
+				}
+				if (initalnumber == 2)
+				{
+					highscores[highscoreindex + 3] += initial * 100;
+				}
+				if (initalnumber == 1)
+				{
+					highscores[highscoreindex + 3] += initial * 10;
+				}
+				if (initalnumber == 0)
+				{
+					highscores[highscoreindex + 3] += initial;
+				}
 				initial = 0;
 				initalnumber -= 1;
-				menuChoice=0;
+				menuChoice = 0;
 				break;
 			case 3:
+
 				if (initial >= 1)
 				{
 					initial -= 1;
 				}
-				confirmexit = 0;
-				menuChoice=0;
-				break;
-			case 4:
-				if (confirmexit < 2)
-				{
-					confirmexit += 1;
-				}
-				if (confirmexit >= 2)
-				{
-					highscoretrue == 0;
-				}
-				menuChoice=0;
+				menuChoice = 0;
 				break;
 			}
 
@@ -354,14 +352,8 @@ void gameStart(void)
 			{
 				display_string(3, "Current: F");
 			}
-			if (confirmexit == 1)
-			{
-				display_string(0, "Do You Want To Exit");
-				display_string(1, "Score Will Still Be Stored");
-				display_string(2, "4. Confirm,");
-				display_string(3, "1-3. To Cancel");
-			}
 			display_update();
+			delay(100);
 		}
 	}
 

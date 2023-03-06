@@ -17,6 +17,10 @@ int birdx = 5;
 int birdy = 50;
 //These represent current bird x and y values 
 
+
+int birdelex1=0;
+int birdelex2=0;
+
 int score = 0;
 //This represents score of current/last game
 

@@ -15,6 +15,10 @@ extern int birdx;
 extern int birdy;
 //These represent current bird x and y values 
 
+
+extern int birdelex1;
+extern int birdelex2;
+
 extern int score;
 //This represents score of current/last game
 
